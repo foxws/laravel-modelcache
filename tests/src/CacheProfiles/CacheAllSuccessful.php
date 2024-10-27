@@ -2,6 +2,7 @@
 
 use Foxws\UserCache\CacheProfiles\CacheAllSuccessful;
 use Foxws\UserCache\Tests\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
@@ -20,7 +21,7 @@ it('will use the id of the logged in user to differentiate caches', function () 
     assertEquals('', $this->cacheProfile->useCacheNameSuffix('foo'));
 
     User::all()->map(function ($user) {
-        auth()->login(User::find($user->getKey()));
+        Auth::loginUsingId(User::find($user->getKey()));
         assertEquals($user->getKey(), $this->cacheProfile->useCacheNameSuffix('testValue'));
     });
 });
