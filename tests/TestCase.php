@@ -3,18 +3,32 @@
 namespace Foxws\UserCache\Tests;
 
 use Foxws\UserCache\UserCacheServiceProvider;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends Orchestra
+abstract class TestCase extends Orchestra
 {
+    use WithWorkbench;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Foxws\\UserCache\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
+        $this->setUpDatabase($this->app);
+    }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('cache.default', 'file');
+
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
     }
 
     protected function getPackageProviders($app)
@@ -24,13 +38,22 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    /**
+     * @param  \Illuminate\Foundation\Application  $app
+     */
+    protected function setUpDatabase($app)
     {
-        config()->set('database.default', 'testing');
+        Schema::dropAllTables();
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_laravel-user-cache_table.php.stub';
-        $migration->up();
-        */
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->uuid();
+            $table->string('email')->unique();
+            $table->string('name')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamps();
+        });
     }
 }
