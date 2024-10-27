@@ -3,28 +3,27 @@
 namespace Foxws\UserCache\CacheProfiles;
 
 use DateTime;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 abstract class BaseCacheProfile implements CacheProfile
 {
-    public function enabled(User $user): bool
+    public function enabled(mixed $value): bool
     {
         return config('usercache.enabled');
     }
 
-    public function cacheValueUntil(User $user, mixed $value): DateTime
+    public function cacheValueUntil(mixed $value): DateTime
     {
         return Carbon::now()->addSeconds(
             config('usercache.cache_lifetime_in_seconds')
         );
     }
 
-    public function useCacheNameSuffix(User $user): string
+    public function useCacheNameSuffix(mixed $value): string
     {
         return Auth::check()
-            ? (string) $user->getKey()
+            ? (string) Auth::id()
             : '';
     }
 

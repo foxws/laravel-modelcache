@@ -33,7 +33,7 @@ class UserCache
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function CacheEntry(User $user, mixed $value, ?int $lifetimeInSeconds = null): mixed
+    public function cacheEntry(User $user, mixed $value, ?int $lifetimeInSeconds = null): mixed
     {
         $this->cache->put(
             $this->hasher->getHashFor($user, $value),
@@ -69,7 +69,7 @@ class UserCache
 
         $keys = is_array($keys) ? $keys : func_get_args();
 
-        $this->selectCachedItems()->forUrls($keys)->forget();
+        $this->selectCachedItems()->forKeys($keys)->forget();
 
         event(new ClearedUserCache);
 

@@ -3,7 +3,6 @@
 namespace Foxws\UserCache\Hasher;
 
 use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Illuminate\Foundation\Auth\User;
 
 class DefaultHasher implements CacheHasher
 {
@@ -13,13 +12,13 @@ class DefaultHasher implements CacheHasher
         //
     }
 
-    public function getHashFor(User $user, mixed $value): string
+    public function getHashFor(mixed $value): string
     {
-        $cacheNameSuffix = $this->getCacheNameSuffix($user);
+        $cacheNameSuffix = $this->getCacheNameSuffix($value);
 
-        return 'usercache-'.hash(
+        return 'usercache-' . hash(
             'xxh128',
-            "{$cacheNameSuffix}:{$this->getNormalizedCacheValue($value)}"
+            "{$this->getNormalizedCacheValue($value)}:{$cacheNameSuffix}"
         );
     }
 
@@ -28,8 +27,8 @@ class DefaultHasher implements CacheHasher
         return $value;
     }
 
-    protected function getCacheNameSuffix(User $user)
+    protected function getCacheNameSuffix(mixed $value)
     {
-        return $this->cacheProfile->useCacheNameSuffix($user);
+        return $this->cacheProfile->useCacheNameSuffix($value);
     }
 }

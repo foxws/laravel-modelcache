@@ -6,8 +6,8 @@ use Exception;
 
 class CouldNotUnserialize extends Exception
 {
-    public static function serializedCacheData(string $serializedData): static
+    public static function serializedCacheValue(string $serializeValue): static
     {
-        return new static("Could not unserialize serialized data `{$serializedData}`");
+        return new static("Could not unserialize serialized value `{$serializeValue}`");
     }
 }

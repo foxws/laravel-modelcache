@@ -7,13 +7,13 @@ use Illuminate\Foundation\Auth\User;
 
 interface CacheProfile
 {
-    public function enabled(User $user): bool;
+    public function enabled(mixed $value): bool;
 
     public function shouldUseCache(User $user): bool;
 
     public function shouldCacheValue(mixed $value): bool;
 
-    public function cacheValueUntil(User $user, mixed $value): DateTime;
+    public function cacheValueUntil(mixed $value): DateTime;
 
     /*
      * Return a string to differentiate this request from others.
@@ -21,5 +21,5 @@ interface CacheProfile
      * For example: if you want a different cache per user you could return the id of
      * the logged in user.
      */
-    public function useCacheNameSuffix(User $user): string;
+    public function useCacheNameSuffix(mixed $value): string;
 }
