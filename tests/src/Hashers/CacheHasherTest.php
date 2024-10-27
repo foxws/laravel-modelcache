@@ -14,7 +14,7 @@ beforeEach(function () {
     $this->cacheHasher = new DefaultHasher($this->cacheProfile);
 });
 
-it('can generate a hash for a request', function () {
+it('can generate a hash for a cache', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
     assertEquals(
