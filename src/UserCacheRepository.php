@@ -4,7 +4,6 @@ namespace Foxws\UserCache;
 
 use Foxws\UserCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserCacheRepository
 {
@@ -25,7 +24,7 @@ class UserCacheRepository
         return $this->cache->has($key);
     }
 
-    public function get(string $key): Response
+    public function get(string $key): mixed
     {
         return $this->serializer->unserialize($this->cache->get($key) ?? '');
     }
