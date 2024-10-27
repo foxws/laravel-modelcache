@@ -5,9 +5,9 @@ namespace Foxws\UserCache\Commands;
 use Foxws\UserCache\Facades\UserCache;
 use Illuminate\Console\Command;
 
-class ForgetCommand extends Command
+class ClearCommand extends Command
 {
-    protected $signature = 'usercache:forget {--key}';
+    protected $signature = 'usercache:forget {--key=}';
 
     protected $description = 'Clear the user cache';
 
@@ -20,6 +20,10 @@ class ForgetCommand extends Command
 
     protected function clear()
     {
-        UserCache::forget($this->option('key'));
+        if ($key = $this->option('key')) {
+            return UserCache::forget($key);
+        }
+
+        UserCache::clear();
     }
 }

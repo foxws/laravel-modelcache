@@ -58,7 +58,7 @@ class UserCache
     {
         event(new ClearingUserCache);
 
-        // $this->taggedCache($tags)->clear();
+        $this->cache->clear();
 
         event(new ClearedUserCache);
     }
