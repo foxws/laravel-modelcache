@@ -1,12 +1,7 @@
 <?php
 
-use Illuminate\Http\JsonResponse;
-
 use Foxws\UserCache\CacheProfiles\CacheAllSuccessful;
-use Foxws\UserCache\Tests\Models\User;
 
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 
 beforeEach(function () {
