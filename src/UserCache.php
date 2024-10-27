@@ -6,7 +6,6 @@ use Foxws\UserCache\CacheItemSelector\CacheItemSelector;
 use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Hasher\EloquentHasher;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
