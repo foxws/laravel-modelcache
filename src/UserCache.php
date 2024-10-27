@@ -36,22 +36,24 @@ class UserCache
     public function cacheEntry(User $user, mixed $value, ?int $lifetimeInSeconds = null): mixed
     {
         $this->cache->put(
-            $this->hasher->getHashFor($user, $value),
+            $this->hasher->getHashFor($value),
             $value,
-            $lifetimeInSeconds ?? $this->cacheProfile->cacheValueUntil($user, $value)
+            $lifetimeInSeconds ?? $this->cacheProfile->cacheValueUntil($value)
         );
+
+        return $value;
     }
 
-    public function hasBeenCached(User $user, mixed $value): bool
+    public function hasBeenCached(mixed $value): bool
     {
         return config('usercache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($user, $value))
+            ? $this->cache->has($this->hasher->getHashFor($value))
             : false;
     }
 
-    public function getCachedValueFor(User $user, mixed $value): mixed
+    public function getCachedValueFor(mixed $value): mixed
     {
-        return $this->cache->get($this->hasher->getHashFor($user, $value));
+        return $this->cache->get($this->hasher->getHashFor($value));
     }
 
     public function clear(array $keys = []): void
