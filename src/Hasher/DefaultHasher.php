@@ -12,11 +12,11 @@ class DefaultHasher implements CacheHasher
         //
     }
 
-    public function getHashFor(string $key, mixed $value): string
+    public function getHashFor(string $key, mixed $value = null): string
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($key);
 
-        return 'usercache-'.hash(
+        return 'usercache-' . hash(
             'xxh128',
             "{$key}:{$cacheNameSuffix}"
         );

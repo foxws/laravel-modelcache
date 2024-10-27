@@ -15,7 +15,7 @@ class UserCacheRepository
         //
     }
 
-    public function put(string $key, mixed $value, \DateTime|int $seconds): void
+    public function put(string $key, mixed $value = null, \DateTime|int $seconds): void
     {
         $this->cache->put($key, $this->serializer->serialize($value), is_numeric($seconds) ? now()->addSeconds($seconds) : $seconds);
     }

@@ -10,7 +10,7 @@ interface CacheProfile
 
     public function shouldUseCache(string $key): bool;
 
-    public function shouldCacheValue(mixed $value): bool;
+    public function shouldCacheValue(mixed $value = null): bool;
 
     public function cacheValueUntil(string $key): DateTime;
 

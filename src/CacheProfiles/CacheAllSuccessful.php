@@ -11,7 +11,7 @@ class CacheAllSuccessful extends BaseCacheProfile
         return Auth::check();
     }
 
-    public function shouldCacheValue(mixed $value): bool
+    public function shouldCacheValue(mixed $value = null): bool
     {
         return true;
     }

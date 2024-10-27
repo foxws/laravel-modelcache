@@ -8,7 +8,7 @@ class DefaultSerializer implements Serializer
 {
     public const CACHE_TYPE_NORMAL = 'normal';
 
-    public function serialize(mixed $value): string
+    public function serialize(mixed $value = null): string
     {
         return serialize($this->getCacheData($value));
     }
@@ -24,7 +24,7 @@ class DefaultSerializer implements Serializer
         return $this->buildCacheValue($cacheProperties);
     }
 
-    protected function getCacheData(mixed $value): array
+    protected function getCacheData(mixed $value = null): array
     {
         $type = static::CACHE_TYPE_NORMAL;
 
