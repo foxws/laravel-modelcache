@@ -25,56 +25,35 @@ class UserCache
         return $this->cacheProfile->enabled($user);
     }
 
-    public function shouldCache(User $user, Response $response): bool
+    public function shouldCache(User $user, mixed $data): bool
     {
-        if (! $this->cacheProfile->shouldUseCache($request)) {
+        if (! $this->cacheProfile->shouldUseCache($user)) {
             return false;
         }
 
-        return $this->cacheProfile->shouldCacheResponse($response);
+        return $this->cacheProfile->shouldCacheData($data);
     }
 
-    public function shouldBypass(Request $request): bool
-    {
-        // Ensure we return if cache_bypass_header is not setup
-        if (! config('UserCache.cache_bypass_header.name')) {
-            return false;
-        }
-        // Ensure we return if cache_bypass_header is not setup
-        if (! config('UserCache.cache_bypass_header.value')) {
-            return false;
-        }
-
-        return $request->header(config('UserCache.cache_bypass_header.name')) === (string) config('UserCache.cache_bypass_header.value');
-    }
-
-    public function cacheResponse(
-        Request $request,
-        Response $response,
+    public function cacheData(
+        User $user,
+        mixed $data,
         ?int $lifetimeInSeconds = null,
-        array $tags = []
-    ): Response {
-        if (config('UserCache.add_cache_time_header')) {
-            $response = $this->addCachedHeader($response);
+    ): mixed {
+        if (config('usercache.add_cache_time_key')) {
+            $value = $this->addCachedKey($response);
         }
 
-        $this->taggedCache($tags)->put(
-            $this->hasher->getHashFor($request),
-            $response,
-            $lifetimeInSeconds ?? $this->cacheProfile->cacheRequestUntil($request),
-        );
-
-        return $response;
+        return $value;
     }
 
-    public function hasBeenCached(Request $request, array $tags = []): bool
+    public function hasBeenCached(mixed $data): bool
     {
-        return config('UserCache.enabled')
-            ? $this->taggedCache($tags)->has($this->hasher->getHashFor($request))
+        return config('usercache.enabled')
+            ? $this->cache->has($this->hasher->getHashFor($data))
             : false;
     }
 
-    public function getCachedResponseFor(Request $request, array $tags = []): Response
+    public function getCachedDataFor(string $key): mixed
     {
         return $this->taggedCache($tags)->get($this->hasher->getHashFor($request));
     }
@@ -119,14 +98,5 @@ class UserCache
     public function selectCachedItems(): CacheItemSelector
     {
         return new CacheItemSelector($this->hasher, $this->cache);
-    }
-
-    protected function taggedCache(array $tags = []): UserCacheRepository
-    {
-        if (empty($tags)) {
-            return $this->cache;
-        }
-
-        return $this->cache->tags($tags);
     }
 }

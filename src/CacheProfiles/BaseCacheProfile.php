@@ -14,7 +14,7 @@ abstract class BaseCacheProfile implements CacheProfile
         return config('usercache.enabled');
     }
 
-    public function cacheUntil(User $user): DateTime
+    public function cacheUntil(mixed $data): DateTime
     {
         return Carbon::now()->addSeconds(
             config('usercache.cache_lifetime_in_seconds')

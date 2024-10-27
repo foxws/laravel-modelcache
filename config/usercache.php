@@ -19,7 +19,7 @@ return [
      * This setting determines if the cache time should be added to a cached response.
      * This can be handy when debugging.
      */
-    'add_cache_time_data' => env('APP_DEBUG', false),
+    'add_cache_time_key' => env('APP_DEBUG', false),
 
     /*
      * This must be the name of any store that is configured in config/cache.php.

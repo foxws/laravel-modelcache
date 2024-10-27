@@ -5,7 +5,7 @@ namespace Foxws\UserCache\Hasher;
 use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Illuminate\Foundation\Auth\User;
 
-class DefaultHasher implements EloquentHasher
+class DefaultHasher implements CacheHasher
 {
     public function __construct(
         protected CacheProfile $cacheProfile,
@@ -13,19 +13,19 @@ class DefaultHasher implements EloquentHasher
         //
     }
 
-    public function getHashFor(User $user): string
+    public function getHashFor(User $user, mixed $value): string
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($user);
 
         return 'usercache-'.hash(
             'xxh128',
-            "{$this->getNormalizedCacheKey($user)}:{$cacheNameSuffix}"
+            "{$cacheNameSuffix}:{$this->getNormalizedCacheValue($value)}"
         );
     }
 
-    protected function getNormalizedCacheKey(User $user): string
+    protected function getNormalizedCacheValue(mixed $value): mixed
     {
-        return "{$user->getMorphClass()}:{$user->getKey()}";
+        return $value;
     }
 
     protected function getCacheNameSuffix(User $user)
