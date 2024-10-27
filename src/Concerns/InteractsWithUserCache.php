@@ -12,11 +12,11 @@ trait InteractsWithUserCache
             return null;
         }
 
-        return UserCache::cache($key, $value);
+        return UserCache::cache($this, $key, $value);
     }
 
     public function cacheStored(string $key): mixed
     {
-        return UserCache::getCachedValue($key);
+        return UserCache::getCachedValue($this, $key);
     }
 }
