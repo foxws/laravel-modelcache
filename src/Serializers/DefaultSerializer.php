@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\USerCache\Serializers;
+namespace Foxws\UserCache\Serializers;
 
 use Foxws\UserCache\Exceptions\CouldNotUnserialize;
 
