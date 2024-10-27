@@ -3,9 +3,7 @@
 namespace Foxws\UserCache\CacheItemSelector;
 
 use Foxws\UserCache\Hasher\CacheHasher;
-use Foxws\UserCache\ResponseCacheRepository;
 use Foxws\UserCache\UserCacheRepository;
-use Illuminate\Foundation\Auth\User;
 
 class CacheItemSelector extends AbstractCacheBuilder
 {
@@ -16,7 +14,7 @@ class CacheItemSelector extends AbstractCacheBuilder
         protected UserCacheRepository $cache,
     ) {}
 
-    public function forKeys(string | array $keys): static
+    public function forKeys(string|array $keys): static
     {
         $this->keys = is_array($keys) ? $keys : func_get_args();
 
@@ -31,7 +29,7 @@ class CacheItemSelector extends AbstractCacheBuilder
 
                 return $this->hasher->getHashFor($value);
             })
-            ->filter(fn($hash) => $this->cache->has($hash))
-            ->each(fn($hash) => $this->cache->forget($hash));
+            ->filter(fn ($hash) => $this->cache->has($hash))
+            ->each(fn ($hash) => $this->cache->forget($hash));
     }
 }
