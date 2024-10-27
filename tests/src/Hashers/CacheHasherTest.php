@@ -2,6 +2,7 @@
 
 use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Hasher\DefaultHasher;
+use Foxws\UserCache\Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
@@ -16,6 +17,6 @@ it('can generate a hash for a request', function () {
 
     assertEquals(
         'usercache-d5a054922739f7857b5175e6fe1cab51',
-        $this->cacheHasher->getHashFor('foo')
+        $this->cacheHasher->getHashFor('last_viewed', 'foo')
     );
 });

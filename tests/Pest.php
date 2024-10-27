@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
+use Foxws\UserCache\Tests\TestCase;
 
-expect()
-    ->extend('toBeSameModel', fn (Model $model) => $this->is($model)->toBeTrue());
+uses(TestCase::class)->in('.');
 
 beforeEach(function () {
     // Fake instances

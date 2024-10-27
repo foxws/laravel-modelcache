@@ -1,6 +1,7 @@
 <?php
 
 use Foxws\UserCache\Serializers\DefaultSerializer;
+use Foxws\UserCache\Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;

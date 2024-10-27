@@ -1,5 +1,6 @@
 <?php
 
+use Foxws\UserCache\Tests\TestCase;
 use Foxws\UserCache\UserCacheRepository;
 use Illuminate\Cache\Repository;
 
