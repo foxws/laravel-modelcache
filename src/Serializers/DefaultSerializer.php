@@ -10,23 +10,25 @@ class DefaultSerializer implements Serializer
 
     public function serialize(mixed $value): string
     {
-        return serialize($this->getCacheValue($value));
+        return serialize($this->getCacheData($value));
     }
 
     public function unserialize(string $serializedValue): mixed
     {
-        $valueProperties = unserialize($serializedValue);
+        $cacheProperties = unserialize($serializedValue);
 
-        if (! $this->containsValidCacheProperties($valueProperties)) {
-            throw CouldNotUnserialize::serializedCacheData($serializedValue);
+        if (! $this->containsValidCacheProperties($cacheProperties)) {
+            throw CouldNotUnserialize::serializedCacheValue($serializedValue);
         }
 
-        return $this->buildCacheValue($valueProperties);
+        return $this->buildCacheValue($cacheProperties);
     }
 
-    protected function getCacheValue(mixed $value): array
+    protected function getCacheData(mixed $value): array
     {
-        return compact('data', 'type');
+        $type = static::CACHE_TYPE_NORMAL;
+
+        return compact('value', 'type');
     }
 
     protected function containsValidCacheProperties(mixed $properties): bool
@@ -35,13 +37,13 @@ class DefaultSerializer implements Serializer
             return false;
         }
 
-        return isset($properties['data']);
+        return isset($properties['value']);
     }
 
-    protected function buildCacheValue(array $dataProperties): mixed
+    protected function buildCacheValue(array $cacheProperties): mixed
     {
-        // $type = $dataProperties['type'] ?? static::CACHE_TYPE_NORMAL;
+        $type = $cacheProperties['type'] ?? static::CACHE_TYPE_NORMAL;
 
-        return $dataProperties['data'];
+        return $cacheProperties['value'];
     }
 }
