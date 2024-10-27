@@ -35,7 +35,7 @@ class UserCache
     public function cache(string $key, mixed $value = null, ?int $ttl = null): mixed
     {
         $this->cache->put(
-            $this->hasher->getHashFor($key, $value),
+            $this->hasher->getHashFor($key),
             $value,
             $ttl ?? $this->cacheProfile->cacheValueUntil($value)
         );
@@ -43,16 +43,16 @@ class UserCache
         return $value;
     }
 
-    public function hasBeenCached(string $key, mixed $value = null): bool
+    public function hasBeenCached(string $key): bool
     {
         return config('usercache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($key, $value))
+            ? $this->cache->has($this->hasher->getHashFor($key))
             : false;
     }
 
-    public function getCachedValue(string $key, mixed $value = null): mixed
+    public function getCachedValue(string $key): mixed
     {
-        return $this->cache->get($this->hasher->getHashFor($key, $value));
+        return $this->cache->get($this->hasher->getHashFor($key));
     }
 
     public function clear(array $keys = []): void

@@ -15,8 +15,8 @@ trait InteractsWithUserCache
         return UserCache::cache($key, $value);
     }
 
-    public function cacheStored(string $key, mixed $value = null): mixed
+    public function cacheStored(string $key): mixed
     {
-        return UserCache::getCachedValue($key, $value);
+        return UserCache::getCachedValue($key);
     }
 }
