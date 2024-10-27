@@ -2,7 +2,9 @@
 
 namespace Foxws\UserCache\Hasher;
 
+use Illuminate\Foundation\Auth\User;
+
 interface CacheHasher
 {
-    public function getHashFor(string $key): string;
+    public function getHashFor(User $user, string $key): string;
 }
