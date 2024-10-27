@@ -1,10 +1,12 @@
 {
     "name": "foxws/laravel-user-cache",
-    "description": "Simple Laravel caching trait for user data",
+    "description": "Cache helper for auth models",
     "keywords": [
-        "Foxws",
+        "foxws",
         "laravel",
-        "laravel-user-cache"
+        "laravel-user-cache",
+        "cache",
+        "auth"
     ],
     "homepage": "https://github.com/foxws/laravel-user-cache",
     "license": "MIT",
@@ -17,8 +19,13 @@
     ],
     "require": {
         "php": "^8.2",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^10.0||^11.0"
+        "illuminate/cache": "^10.0|^11.0",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/container": "^10.0|^11.0",
+        "illuminate/contracts": "^10.0||^11.0",
+        "illuminate/support": "^10.0|^11.0",
+        "nesbot/carbon": "^2.63|^3.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -35,8 +42,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Foxws\\UserCache\\": "src/",
-            "Foxws\\UserCache\\Database\\Factories\\": "database/factories/"
+            "Foxws\\UserCache\\": "src/"
         }
     },
     "autoload-dev": {
