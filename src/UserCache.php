@@ -32,7 +32,7 @@ class UserCache
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function createCacheEntry(string $key, mixed $value, ?int $ttl = null): mixed
+    public function cache(string $key, mixed $value, ?int $ttl = null): mixed
     {
         $this->cache->put(
             $this->hasher->getHashFor($key, $value),
@@ -50,7 +50,7 @@ class UserCache
             : false;
     }
 
-    public function getCachedValueFor(string $key, mixed $value): mixed
+    public function getCachedValue(string $key, mixed $value): mixed
     {
         return $this->cache->get($this->hasher->getHashFor($key, $value));
     }

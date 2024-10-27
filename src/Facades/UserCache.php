@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Foxws\UserCache\UserCache
- *
- * @method static mixed cacheEntry(string $key, mixed $value, ?int $ttl)
- * @method static void clear()
  */
 class UserCache extends Facade
 {

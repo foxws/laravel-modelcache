@@ -2,6 +2,7 @@
 
 namespace Foxws\UserCache\Tests\Models;
 
+use Foxws\UserCache\Concerns\InteractsWithUserCache;
 use Foxws\UserCache\Tests\Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
+    use InteractsWithUserCache;
     use Notifiable;
 
     protected $guarded = [];
