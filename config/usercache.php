@@ -16,15 +16,9 @@ return [
     'cache_profile' => \Foxws\UserCache\CacheProfiles\CacheAllSuccessful::class,
 
     /*
-     * This setting determines if the cache time should be added to a cached response.
-     * This can be handy when debugging.
-     */
-    'add_cache_time_key' => env('APP_DEBUG', false),
-
-    /*
      * This must be the name of any store that is configured in config/cache.php.
      */
-    'cache_store' => env('USER_CACHE_STORE') ?: env('CACHE_STORE', 'redis'),
+    'cache_store' => env('USER_CACHE_STORE') ?: env('CACHE_STORE', 'database'),
 
     /*
      * Default time-to-live for cache items in seconds.

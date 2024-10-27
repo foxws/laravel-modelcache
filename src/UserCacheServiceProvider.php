@@ -4,7 +4,7 @@ namespace Foxws\UserCache;
 
 use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Commands\ClearCommand;
-use Foxws\UserCache\Hasher\EloquentHasher;
+use Foxws\UserCache\Hasher\CacheHasher;
 use Foxws\UserCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 use Illuminate\Container\Container;
@@ -29,7 +29,7 @@ class UserCacheServiceProvider extends PackageServiceProvider
             return $app->make(config('usercache.cache_profile'));
         });
 
-        $this->app->bind(EloquentHasher::class, function (Container $app) {
+        $this->app->bind(CacheHasher::class, function (Container $app) {
             return $app->make(config('usercache.hasher'));
         });
 
