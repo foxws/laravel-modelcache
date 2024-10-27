@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class ClearCommand extends Command
 {
-    protected $signature = 'usercache:forget {--key=}';
+    protected $signature = 'usercache:clear {--key=}';
 
     protected $description = 'Clear the user cache';
 
