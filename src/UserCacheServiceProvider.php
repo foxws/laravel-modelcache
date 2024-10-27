@@ -16,8 +16,8 @@ class UserCacheServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-user-cache')
-            ->hasConfigFile('user-cache')
+            ->name('laravel-usercache')
+            ->hasConfigFile('usercache')
             ->hasCommands([
                 ClearCommand::class,
             ]);
