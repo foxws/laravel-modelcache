@@ -26,7 +26,7 @@ it('can generate a hash for a cache', function () {
     );
 });
 
-it('can store value using user store', function () {
+it('can store values using user store', function () {
     $this->user->cacheStore('cacheKey', 'cacheValue');
 
     assertEquals('cacheValue', $this->user->cacheStored('cacheKey'));
