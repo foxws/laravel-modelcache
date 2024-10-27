@@ -8,23 +8,23 @@ class DefaultSerializer implements Serializer
 {
     public const CACHE_TYPE_NORMAL = 'normal';
 
-    public function serialize(mixed $data): string
+    public function serialize(mixed $value): string
     {
-        return serialize($this->getCacheData($data));
+        return serialize($this->getCacheValue($value));
     }
 
-    public function unserialize(string $serializedData): mixed
+    public function unserialize(string $serializedValue): mixed
     {
-        $dataProperties = unserialize($serializedData);
+        $valueProperties = unserialize($serializedValue);
 
-        if (! $this->containsValidCacheProperties($dataProperties)) {
-            throw CouldNotUnserialize::serializedCacheData($serializedData);
+        if (! $this->containsValidCacheProperties($valueProperties)) {
+            throw CouldNotUnserialize::serializedCacheData($serializedValue);
         }
 
-        return $this->buildCacheData($dataProperties);
+        return $this->buildCacheValue($valueProperties);
     }
 
-    protected function getCacheData(mixed $data): array
+    protected function getCacheValue(mixed $value): array
     {
         return compact('data', 'type');
     }
@@ -38,7 +38,7 @@ class DefaultSerializer implements Serializer
         return isset($properties['data']);
     }
 
-    protected function buildCacheData(array $dataProperties): mixed
+    protected function buildCacheValue(array $dataProperties): mixed
     {
         // $type = $dataProperties['type'] ?? static::CACHE_TYPE_NORMAL;
 

@@ -4,21 +4,20 @@ namespace Foxws\UserCache;
 
 use Foxws\UserCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
-use Illuminate\Cache\TaggedCache;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserCacheRepository
 {
     public function __construct(
-        protected Serializer $responseSerializer,
+        protected Serializer $serializer,
         protected Repository $cache,
     ) {
         //
     }
 
-    public function put(string $key, Response $response, \DateTime|int $seconds): void
+    public function put(string $key, mixed $value, \DateTime|int $seconds): void
     {
-        $this->cache->put($key, $this->responseSerializer->serialize($response), is_numeric($seconds) ? now()->addSeconds($seconds) : $seconds);
+        $this->cache->put($key, $this->serializer->serialize($value), is_numeric($seconds) ? now()->addSeconds($seconds) : $seconds);
     }
 
     public function has(string $key): bool
@@ -28,42 +27,16 @@ class UserCacheRepository
 
     public function get(string $key): Response
     {
-        return $this->responseSerializer->unserialize($this->cache->get($key) ?? '');
+        return $this->serializer->unserialize($this->cache->get($key) ?? '');
     }
 
     public function clear(): void
     {
-        if ($this->isTagged($this->cache)) {
-            $this->cache->flush();
-
-            return;
-        }
-
-        if (empty(config('responsecache.cache_tag'))) {
-            $this->cache->clear();
-
-            return;
-        }
-
-        $this->cache->tags(config('responsecache.cache_tag'))->flush();
+        $this->cache->clear();
     }
 
     public function forget(string $key): bool
     {
         return $this->cache->forget($key);
-    }
-
-    public function tags(array $tags): self
-    {
-        if ($this->isTagged($this->cache)) {
-            $tags = array_merge($this->cache->getTags()->getNames(), $tags);
-        }
-
-        return new self($this->responseSerializer, $this->cache->tags($tags));
-    }
-
-    public function isTagged($repository): bool
-    {
-        return $repository instanceof TaggedCache && ! empty($repository->getTags());
     }
 }

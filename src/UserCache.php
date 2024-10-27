@@ -4,7 +4,9 @@ namespace Foxws\UserCache;
 
 use Foxws\UserCache\CacheItemSelector\CacheItemSelector;
 use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Foxws\UserCache\Hasher\EloquentHasher;
+use Foxws\UserCache\Events\ClearedUserCache;
+use Foxws\UserCache\Events\ClearingUserCache;
+use Foxws\UserCache\Hasher\CacheHasher;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +15,7 @@ class UserCache
 {
     public function __construct(
         protected UserCacheRepository $cache,
-        protected EloquentHasher $hasher,
+        protected CacheHasher $hasher,
         protected CacheProfile $cacheProfile,
     ) {
         //
@@ -24,70 +26,52 @@ class UserCache
         return $this->cacheProfile->enabled($user);
     }
 
-    public function shouldCache(User $user, mixed $data): bool
+    public function shouldCache(User $user, mixed $value): bool
     {
         if (! $this->cacheProfile->shouldUseCache($user)) {
             return false;
         }
 
-        return $this->cacheProfile->shouldCacheData($data);
+        return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function cacheData(
-        User $user,
-        mixed $data,
-        ?int $lifetimeInSeconds = null,
-    ): mixed {
-        if (config('usercache.add_cache_time_key')) {
-            $value = $this->addCachedKey($response);
-        }
-
-        return $value;
+    public function CacheEntry(User $user, mixed $value, ?int $lifetimeInSeconds = null): mixed
+    {
+        $this->cache->put(
+            $this->hasher->getHashFor($user, $value),
+            $value,
+            $lifetimeInSeconds ?? $this->cacheProfile->cacheValueUntil($user, $value)
+        );
     }
 
-    public function hasBeenCached(mixed $data): bool
+    public function hasBeenCached(User $user, mixed $value): bool
     {
         return config('usercache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($data))
+            ? $this->cache->has($this->hasher->getHashFor($user, $value))
             : false;
     }
 
-    public function getCachedDataFor(string $key): mixed
+    public function getCachedValueFor(User $user, mixed $value): mixed
     {
-        return $this->taggedCache($tags)->get($this->hasher->getHashFor($request));
+        return $this->cache->get($this->hasher->getHashFor($user, $value));
     }
 
-    public function clear(array $tags = []): void
+    public function clear(array $keys = []): void
     {
         event(new ClearingUserCache);
 
-        $this->taggedCache($tags)->clear();
+        // $this->taggedCache($tags)->clear();
 
         event(new ClearedUserCache);
     }
 
-    protected function addCachedHeader(Response $response): Response
-    {
-        $clonedResponse = clone $response;
-
-        $clonedResponse->headers->set(
-            config('UserCache.cache_time_header_name'),
-            Carbon::now()->toRfc2822String(),
-        );
-
-        return $clonedResponse;
-    }
-
-    /**
-     * @param  string[]  $tags
-     * @return \Spatie\UserCache\UserCache
-     */
-    public function forget(string|array $uris, array $tags = []): self
+    public function forget(string|array $keys): self
     {
         event(new ClearingUserCache);
 
-        $uris = is_array($uris) ? $uris : func_get_args();
-        $this->selectCachedItems()->forUrls($uris)->forget();
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        $this->selectCachedItems()->forUrls($keys)->forget();
 
         event(new ClearedUserCache);
 

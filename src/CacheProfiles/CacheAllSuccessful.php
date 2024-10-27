@@ -11,7 +11,7 @@ class CacheAllSuccessful extends BaseCacheProfile
         return true;
     }
 
-    public function shouldCacheData(mixed $data): bool
+    public function shouldCacheValue(mixed $value): bool
     {
         return true;
     }

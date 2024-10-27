@@ -11,9 +11,9 @@ interface CacheProfile
 
     public function shouldUseCache(User $user): bool;
 
-    public function shouldCacheData(mixed $data): bool;
+    public function shouldCacheValue(mixed $value): bool;
 
-    public function cacheUntil(User $user): DateTime;
+    public function cacheValueUntil(User $user, mixed $value): DateTime;
 
     /*
      * Return a string to differentiate this request from others.
