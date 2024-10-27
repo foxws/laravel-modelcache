@@ -6,8 +6,8 @@ use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Commands\ClearCommand;
 use Foxws\UserCache\Hasher\CacheHasher;
 use Foxws\UserCache\Serializers\Serializer;
-use Illuminate\Cache\Repository;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Cache\Repository;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
