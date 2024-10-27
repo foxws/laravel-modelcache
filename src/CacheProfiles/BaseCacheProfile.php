@@ -8,19 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 abstract class BaseCacheProfile implements CacheProfile
 {
-    public function enabled(mixed $value): bool
+    public function enabled(): bool
     {
         return config('usercache.enabled');
     }
 
-    public function cacheValueUntil(mixed $value): DateTime
+    public function cacheValueUntil(string $key): DateTime
     {
         return Carbon::now()->addSeconds(
             config('usercache.cache_lifetime_in_seconds')
         );
     }
 
-    public function useCacheNameSuffix(mixed $value): string
+    public function useCacheNameSuffix(string $key): string
     {
         return Auth::check()
             ? (string) Auth::id()

@@ -12,23 +12,18 @@ class DefaultHasher implements CacheHasher
         //
     }
 
-    public function getHashFor(mixed $value): string
+    public function getHashFor(string $key, mixed $value): string
     {
-        $cacheNameSuffix = $this->getCacheNameSuffix($value);
+        $cacheNameSuffix = $this->getCacheNameSuffix($key);
 
-        return 'usercache-'.hash(
+        return 'usercache-' . hash(
             'xxh128',
-            "{$this->getNormalizedCacheValue($value)}:{$cacheNameSuffix}"
+            "{$key}:{$cacheNameSuffix}"
         );
     }
 
-    protected function getNormalizedCacheValue(mixed $value): mixed
+    protected function getCacheNameSuffix(string $key)
     {
-        return $value;
-    }
-
-    protected function getCacheNameSuffix(mixed $value)
-    {
-        return $this->cacheProfile->useCacheNameSuffix($value);
+        return $this->cacheProfile->useCacheNameSuffix($key);
     }
 }

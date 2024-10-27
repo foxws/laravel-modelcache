@@ -2,13 +2,13 @@
 
 namespace Foxws\UserCache\CacheProfiles;
 
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 
 class CacheAllSuccessful extends BaseCacheProfile
 {
-    public function shouldUseCache(User $user): bool
+    public function shouldUseCache(string $key): bool
     {
-        return true;
+        return Auth::check();
     }
 
     public function shouldCacheValue(mixed $value): bool

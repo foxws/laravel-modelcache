@@ -7,7 +7,6 @@ use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Events\ClearedUserCache;
 use Foxws\UserCache\Events\ClearingUserCache;
 use Foxws\UserCache\Hasher\CacheHasher;
-use Illuminate\Foundation\Auth\User;
 
 class UserCache
 {
@@ -19,41 +18,41 @@ class UserCache
         //
     }
 
-    public function enabled(User $user): bool
+    public function enabled(): bool
     {
-        return $this->cacheProfile->enabled($user);
+        return $this->cacheProfile->enabled();
     }
 
-    public function shouldCache(User $user, mixed $value): bool
+    public function shouldCache(string $key, mixed $value): bool
     {
-        if (! $this->cacheProfile->shouldUseCache($user)) {
+        if (! $this->cacheProfile->shouldUseCache($key)) {
             return false;
         }
 
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function cacheEntry(User $user, mixed $value, ?int $lifetimeInSeconds = null): mixed
+    public function createCacheEntry(string $key, mixed $value, ?int $ttl = null): mixed
     {
         $this->cache->put(
-            $this->hasher->getHashFor($value),
+            $this->hasher->getHashFor($key, $value),
             $value,
-            $lifetimeInSeconds ?? $this->cacheProfile->cacheValueUntil($value)
+            $ttl ?? $this->cacheProfile->cacheValueUntil($value)
         );
 
         return $value;
     }
 
-    public function hasBeenCached(mixed $value): bool
+    public function hasBeenCached(string $key, mixed $value): bool
     {
         return config('usercache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($value))
+            ? $this->cache->has($this->hasher->getHashFor($key, $value))
             : false;
     }
 
-    public function getCachedValueFor(mixed $value): mixed
+    public function getCachedValueFor(string $key, mixed $value): mixed
     {
-        return $this->cache->get($this->hasher->getHashFor($value));
+        return $this->cache->get($this->hasher->getHashFor($key, $value));
     }
 
     public function clear(array $keys = []): void
