@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Foxws\UserCache\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class UserCacheCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-user-cache';
 
     public $description = 'My command';
 
