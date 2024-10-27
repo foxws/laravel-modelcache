@@ -17,7 +17,7 @@ class DefaultHasher implements CacheHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($key);
 
-        return 'usercache-' . hash(
+        return 'usercache-'.hash(
             'xxh128',
             "{$user->getKey()}:{$key}:{$cacheNameSuffix}"
         );

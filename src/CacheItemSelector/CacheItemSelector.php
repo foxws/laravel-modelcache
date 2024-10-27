@@ -31,7 +31,7 @@ class CacheItemSelector extends AbstractCacheBuilder
 
                 return $this->hasher->getHashFor($this->user, $key);
             })
-            ->filter(fn($hash) => $this->cache->has($hash))
-            ->each(fn($hash) => $this->cache->forget($hash));
+            ->filter(fn ($hash) => $this->cache->has($hash))
+            ->each(fn ($hash) => $this->cache->forget($hash));
     }
 }
