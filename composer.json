@@ -47,8 +47,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Foxws\\WireUse\\Tests\\": "tests/src/",
-            "Foxws\\WireUse\\Tests\\Database\\Factories\\": "tests/database/factories/",
+            "Foxws\\UserCache\\Tests\\": "tests/src/",
+            "Foxws\\UserCache\\Tests\\Database\\Factories\\": "tests/database/factories/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
