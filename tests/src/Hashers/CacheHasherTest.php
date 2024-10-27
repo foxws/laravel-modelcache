@@ -2,7 +2,6 @@
 
 use Foxws\UserCache\CacheProfiles\CacheProfile;
 use Foxws\UserCache\Hasher\DefaultHasher;
-use Foxws\UserCache\Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
