@@ -1,7 +1,7 @@
 <?php
 
-use Foxws\UserCache\Events\ClearingUserCache;
 use Foxws\UserCache\Events\ClearedUserCache;
+use Foxws\UserCache\Events\ClearingUserCache;
 use Foxws\UserCache\UserCacheRepository;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Artisan;
