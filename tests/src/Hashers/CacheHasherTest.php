@@ -10,11 +10,11 @@ use function PHPUnit\Framework\assertEquals;
 uses(TestCase::class);
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
-
     $this->cacheProfile = Mockery::mock(CacheProfile::class);
 
     $this->cacheHasher = new DefaultHasher($this->cacheProfile);
+
+    $this->user = User::factory()->create();
 });
 
 it('can generate a hash for a cache', function () {
