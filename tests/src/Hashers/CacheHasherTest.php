@@ -21,7 +21,7 @@ it('can generate a hash for a cache', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
     assertEquals(
-        'usercache-5d712697b89eb7b5e319c4faf4272cf5',
+        'usercache-862c4f7a10a69bdff15f98f3397e0c07',
         $this->cacheHasher->getHashFor($this->user, 'last_viewed')
     );
 });
