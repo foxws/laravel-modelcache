@@ -2,9 +2,9 @@
 
 namespace Foxws\UserCache;
 
+use Foxws\UserCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 use Illuminate\Cache\TaggedCache;
-use Foxws\UserCache\Serializers\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserCacheRepository
@@ -16,7 +16,7 @@ class UserCacheRepository
         //
     }
 
-    public function put(string $key, Response $response, \DateTime | int $seconds): void
+    public function put(string $key, Response $response, \DateTime|int $seconds): void
     {
         $this->cache->put($key, $this->responseSerializer->serialize($response), is_numeric($seconds) ? now()->addSeconds($seconds) : $seconds);
     }

@@ -2,9 +2,9 @@
 
 namespace Foxws\UserCache\Tests;
 
+use Foxws\UserCache\UserCacheServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Foxws\UserCache\UserCacheServiceProvider;
 
 class TestCase extends Orchestra
 {

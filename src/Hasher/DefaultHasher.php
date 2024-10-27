@@ -2,8 +2,8 @@
 
 namespace Foxws\UserCache\Hasher;
 
-use Illuminate\Foundation\Auth\User;
 use Foxws\UserCache\CacheProfiles\CacheProfile;
+use Illuminate\Foundation\Auth\User;
 
 class DefaultHasher implements EloquentHasher
 {
@@ -17,7 +17,7 @@ class DefaultHasher implements EloquentHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($user);
 
-        return 'usercache-' . hash(
+        return 'usercache-'.hash(
             'xxh128',
             "{$this->getNormalizedCacheKey($user)}:{$cacheNameSuffix}"
         );

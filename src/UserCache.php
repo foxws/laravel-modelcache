@@ -2,14 +2,12 @@
 
 namespace Foxws\UserCache;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Foxws\UserCache\CacheItemSelector\CacheItemSelector;
 use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Foxws\UserCache\Events\ClearedResponseCache;
-use Foxws\UserCache\Events\ClearingResponseCache;
 use Foxws\UserCache\Hasher\EloquentHasher;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserCache
@@ -83,11 +81,11 @@ class UserCache
 
     public function clear(array $tags = []): void
     {
-        event(new ClearingUserCache());
+        event(new ClearingUserCache);
 
         $this->taggedCache($tags)->clear();
 
-        event(new ClearedUserCache());
+        event(new ClearedUserCache);
     }
 
     protected function addCachedHeader(Response $response): Response
@@ -103,19 +101,17 @@ class UserCache
     }
 
     /**
-     * @param string|array $uris
-     * @param string[] $tags
-     *
+     * @param  string[]  $tags
      * @return \Spatie\UserCache\UserCache
      */
-    public function forget(string | array $uris, array $tags = []): self
+    public function forget(string|array $uris, array $tags = []): self
     {
-        event(new ClearingUserCache());
+        event(new ClearingUserCache);
 
         $uris = is_array($uris) ? $uris : func_get_args();
         $this->selectCachedItems()->forUrls($uris)->forget();
 
-        event(new ClearedUserCache());
+        event(new ClearedUserCache);
 
         return $this;
     }

@@ -2,15 +2,14 @@
 
 namespace Foxws\UserCache;
 
+use Foxws\UserCache\CacheProfiles\CacheProfile;
+use Foxws\UserCache\Commands\ClearCommand;
+use Foxws\UserCache\Hasher\EloquentHasher;
+use Foxws\UserCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 use Illuminate\Container\Container;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Foxws\UserCache\Commands\ClearCommand;
-use Foxws\UserCache\Hasher\EloquentHasher;
-use Foxws\UserCache\Hasher\RequestHasher;
-use Foxws\UserCache\Serializers\Serializer;
 
 class UserCacheServiceProvider extends PackageServiceProvider
 {
