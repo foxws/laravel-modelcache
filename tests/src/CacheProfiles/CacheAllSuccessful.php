@@ -2,10 +2,13 @@
 
 use Foxws\UserCache\CacheProfiles\CacheAllSuccessful;
 use Foxws\UserCache\Tests\Models\User;
+use Foxws\UserCache\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
+
+uses(TestCase::class);
 
 beforeEach(function () {
     $this->cacheProfile = app(CacheAllSuccessful::class);
