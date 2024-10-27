@@ -8,8 +8,6 @@ use Foxws\UserCache\Events\ClearedUserCache;
 use Foxws\UserCache\Events\ClearingUserCache;
 use Foxws\UserCache\Hasher\CacheHasher;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Carbon;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserCache
 {
