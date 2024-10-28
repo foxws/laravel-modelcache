@@ -1,69 +1,77 @@
-# :package_description
+# Simple Laravel caching trait for user data
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package does not cache models, it gives you helpers to populate the Laravel Cache using a model. By default, logged in users will each have their own separate cache.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+composer require foxws/laravel-modelcache
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
+php artisan vendor:publish --tag="modelcache-config"
 ```
 
 ## Usage
 
+Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent models:
+
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    use InteractsWithModelCache;
+}
+
 ```
+
+```php
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Illuminate\Database\Eloquent\Model;
+
+class Video extends Model
+{
+    use InteractsWithModelCache;
+}
+
+```
+
+To cache a model value:
+
+```php
+User::first()->modelCache('randomSeed', 0.5);
+Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
+```
+
+To get a cached value:
+
+```php
+User::first()->modelCached('randomSeed');
+Video::first()->modelCached('currentTime', $default); // with fallback
+```
+
+To forget a value:
+
+```php
+Video::first()->modelCacheForget('currentTime');
+```
+
+### Creating a custom cache profile
+
+To determine which values should be cached, and for how long, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
+
+You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
 ## Testing
 
@@ -85,8 +93,9 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
+This package is entirely based on the [space/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package.
+
+Please consider to sponsor Spatie, such as purchasing their excellent courses. :)
 
 ## License
 

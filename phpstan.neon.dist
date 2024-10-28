@@ -6,7 +6,9 @@ parameters:
     paths:
         - src
         - config
-        - database
+        - tests/database
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
+    ignoreErrors:
+        - '#Unsafe usage of new static#'

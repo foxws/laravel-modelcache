@@ -1,24 +1,31 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "foxws/laravel-modelcache",
+    "description": "Cache helper for auth models",
     "keywords": [
-        ":vendor_name",
+        "foxws",
         "laravel",
-        ":package_slug"
+        "laravel-modelcache",
+        "cache",
+        "auth"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/foxws/laravel-modelcache",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "francoism90",
+            "email": "francoism90@users.noreply.github.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.2",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^10.0||^11.0"
+        "illuminate/cache": "^10.0|^11.0",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/container": "^10.0|^11.0",
+        "illuminate/contracts": "^10.0||^11.0",
+        "illuminate/support": "^10.0|^11.0",
+        "nesbot/carbon": "^2.63|^3.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -35,19 +42,19 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Foxws\\ModelCache\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "Foxws\\ModelCache\\Tests\\": "tests/src/",
+            "Foxws\\ModelCache\\Tests\\Database\\Factories\\": "tests/database/factories/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-modelcache --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -73,10 +80,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Foxws\\ModelCache\\ModelCacheServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "ModelCache": "Foxws\\ModelCache\\Facades\\ModelCache"
             }
         }
     },
