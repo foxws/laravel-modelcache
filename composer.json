@@ -1,12 +1,12 @@
 {
     "name": "foxws/laravel-modelcache",
-    "description": "Cache helper for auth models",
+    "description": "Cache helpers for Laravel Eloquent models",
     "keywords": [
         "foxws",
         "laravel",
         "laravel-modelcache",
-        "cache",
-        "auth"
+        "eloquent",
+        "cache"
     ],
     "homepage": "https://github.com/foxws/laravel-modelcache",
     "license": "MIT",
