@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This package does not cache models, it gives you helpers to manage the Laravel Cache using a model. By default, logged in users will each have their own separate cache.
+This package does not cache models, it gives you helpers to manage the Laravel Cache using a model. By default, logged in users will each have their own separate cache prefix.
 
 ## Installation
 
