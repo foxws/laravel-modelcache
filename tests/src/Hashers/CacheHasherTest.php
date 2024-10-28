@@ -7,7 +7,6 @@ use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;
 
 uses(TestCase::class);
 
@@ -52,6 +51,6 @@ it('can remove values using model concern', function () {
     $this->user->modelCacheForget('cacheKey');
     $this->post->modelCacheForget('cacheFoo');
 
-    assertTrue(false, $this->user->isModelCached('cacheKey'));
-    assertTrue(false, $this->post->isModelCached('cacheFoo'));
+    assertEquals(false, $this->user->isModelCached('cacheKey'));
+    assertEquals(false, $this->post->isModelCached('cacheFoo'));
 });
