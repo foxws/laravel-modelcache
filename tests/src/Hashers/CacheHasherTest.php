@@ -28,7 +28,7 @@ it('can generate a hash for a cache', function () {
     );
 
     assertEquals(
-        'modelcache-862c4f7a10a69bdff15f98f3397e0c07',
+        'modelcache-3f3822d73926df0c7a71519e9914ce3a',
         $this->cacheHasher->getHashFor($this->post, 'last_viewed')
     );
 });
