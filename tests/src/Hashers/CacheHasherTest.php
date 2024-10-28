@@ -7,7 +7,7 @@ use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;;
+use function PHPUnit\Framework\assertTrue;
 
 uses(TestCase::class);
 
