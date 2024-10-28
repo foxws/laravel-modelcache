@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User;
 
 class ClearCommand extends Command
 {
-    protected $signature = 'modelcache:clear {user?} {--key=}';
+    protected $signature = 'modelcache:clear {model} {--key=}';
 
     protected $description = 'Clear the user cache';
 
@@ -16,7 +16,7 @@ class ClearCommand extends Command
     {
         $this->clear();
 
-        $this->components->info('User cache cleared!');
+        $this->components->info('Model cache cleared!');
     }
 
     protected function clear()
