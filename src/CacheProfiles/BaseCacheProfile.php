@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\CacheProfiles;
+namespace Foxws\ModelCache\CacheProfiles;
 
 use DateTime;
 use Illuminate\Support\Carbon;
@@ -10,13 +10,13 @@ abstract class BaseCacheProfile implements CacheProfile
 {
     public function enabled(): bool
     {
-        return config('usercache.enabled');
+        return config('modelcache.enabled');
     }
 
     public function cacheValueUntil(string $key): DateTime
     {
         return Carbon::now()->addSeconds(
-            config('usercache.cache_lifetime_in_seconds')
+            config('modelcache.cache_lifetime_in_seconds')
         );
     }
 

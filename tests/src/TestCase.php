@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Tests;
+namespace Foxws\ModelCache\Tests;
 
-use Foxws\UserCache\UserCacheServiceProvider;
+use Foxws\ModelCache\ModelCacheServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\Concerns\WithWorkbench;
@@ -34,7 +34,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            UserCacheServiceProvider::class,
+            ModelCacheServiceProvider::class,
         ];
     }
 

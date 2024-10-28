@@ -13,7 +13,7 @@ return [
      *  You can provide your own class given that it implements the
      *  CacheProfile interface.
      */
-    'cache_profile' => \Foxws\UserCache\CacheProfiles\CacheAllSuccessful::class,
+    'cache_profile' => \Foxws\ModelCache\CacheProfiles\CacheAllSuccessful::class,
 
     /*
      * This must be the name of any store that is configured in config/cache.php.
@@ -29,10 +29,10 @@ return [
      * This class is responsible for generating a hash for a request. This hash
      * is used to look up a cached response.
      */
-    'hasher' => \Foxws\UserCache\Hasher\DefaultHasher::class,
+    'hasher' => \Foxws\ModelCache\Hasher\DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer' => \Foxws\UserCache\Serializers\DefaultSerializer::class,
+    'serializer' => \Foxws\ModelCache\Serializers\DefaultSerializer::class,
 ];

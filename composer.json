@@ -1,14 +1,14 @@
 {
-    "name": "foxws/laravel-user-cache",
+    "name": "foxws/laravel-modelcache",
     "description": "Cache helper for auth models",
     "keywords": [
         "foxws",
         "laravel",
-        "laravel-user-cache",
+        "laravel-modelcache",
         "cache",
         "auth"
     ],
-    "homepage": "https://github.com/foxws/laravel-user-cache",
+    "homepage": "https://github.com/foxws/laravel-modelcache",
     "license": "MIT",
     "authors": [
         {
@@ -42,19 +42,19 @@
     },
     "autoload": {
         "psr-4": {
-            "Foxws\\UserCache\\": "src/"
+            "Foxws\\ModelCache\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Foxws\\UserCache\\Tests\\": "tests/src/",
-            "Foxws\\UserCache\\Tests\\Database\\Factories\\": "tests/database/factories/",
+            "Foxws\\ModelCache\\Tests\\": "tests/src/",
+            "Foxws\\ModelCache\\Tests\\Database\\Factories\\": "tests/database/factories/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-laravel-user-cache --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-modelcache --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -80,10 +80,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Foxws\\UserCache\\UserCacheServiceProvider"
+                "Foxws\\ModelCache\\ModelCacheServiceProvider"
             ],
             "aliases": {
-                "UserCache": "Foxws\\UserCache\\Facades\\UserCache"
+                "ModelCache": "Foxws\\ModelCache\\Facades\\ModelCache"
             }
         }
     },

@@ -1,11 +1,11 @@
 <?php
 
-namespace Foxws\UserCache;
+namespace Foxws\ModelCache;
 
-use Foxws\UserCache\Serializers\Serializer;
+use Foxws\ModelCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 
-class UserCacheRepository
+class ModelCacheRepository
 {
     public function __construct(
         protected Serializer $serializer,

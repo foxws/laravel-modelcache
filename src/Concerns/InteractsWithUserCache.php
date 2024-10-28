@@ -1,22 +1,22 @@
 <?php
 
-namespace Foxws\UserCache\Concerns;
+namespace Foxws\ModelCache\Concerns;
 
-use Foxws\UserCache\Facades\UserCache;
+use Foxws\ModelCache\Facades\ModelCache;
 
-trait InteractsWithUserCache
+trait InteractsWithModelCache
 {
     public function cacheStore(string $key, mixed $value = null): mixed
     {
-        if (! UserCache::shouldCache($key, $value)) {
+        if (! ModelCache::shouldCache($key, $value)) {
             return null;
         }
 
-        return UserCache::cache($this, $key, $value);
+        return ModelCache::cache($this, $key, $value);
     }
 
     public function cacheStored(string $key): mixed
     {
-        return UserCache::getCachedValue($this, $key);
+        return ModelCache::getCachedValue($this, $key);
     }
 }

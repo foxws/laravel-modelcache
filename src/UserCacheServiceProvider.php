@@ -1,23 +1,23 @@
 <?php
 
-namespace Foxws\UserCache;
+namespace Foxws\ModelCache;
 
-use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Foxws\UserCache\Commands\ClearCommand;
-use Foxws\UserCache\Hasher\CacheHasher;
-use Foxws\UserCache\Serializers\Serializer;
+use Foxws\ModelCache\CacheProfiles\CacheProfile;
+use Foxws\ModelCache\Commands\ClearCommand;
+use Foxws\ModelCache\Hasher\CacheHasher;
+use Foxws\ModelCache\Serializers\Serializer;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class UserCacheServiceProvider extends PackageServiceProvider
+class ModelCacheServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-usercache')
-            ->hasConfigFile('usercache')
+            ->name('laravel-modelcache')
+            ->hasConfigFile('modelcache')
             ->hasCommands([
                 ClearCommand::class,
             ]);
@@ -26,23 +26,23 @@ class UserCacheServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         $this->app->bind(CacheProfile::class, function (Container $app) {
-            return $app->make(config('usercache.cache_profile'));
+            return $app->make(config('modelcache.cache_profile'));
         });
 
         $this->app->bind(CacheHasher::class, function (Container $app) {
-            return $app->make(config('usercache.hasher'));
+            return $app->make(config('modelcache.hasher'));
         });
 
         $this->app->bind(Serializer::class, function (Container $app) {
-            return $app->make(config('usercache.serializer'));
+            return $app->make(config('modelcache.serializer'));
         });
 
-        $this->app->when(UserCacheRepository::class)
+        $this->app->when(ModelCacheRepository::class)
             ->needs(Repository::class)
             ->give(function (): Repository {
-                return app('cache')->store(config('usercache.cache_store'));
+                return app('cache')->store(config('modelcache.cache_store'));
             });
 
-        $this->app->singleton('usercache', UserCache::class);
+        $this->app->singleton('modelcache', ModelCache::class);
     }
 }

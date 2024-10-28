@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\Events;
+namespace Foxws\ModelCache\Events;
 
 class CacheMissed
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Foxws\UserCache\Commands;
+namespace Foxws\ModelCache\Commands;
 
-use Foxws\UserCache\Facades\UserCache;
+use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Auth\User;
 
 class ClearCommand extends Command
 {
-    protected $signature = 'usercache:clear {user?} {--key=}';
+    protected $signature = 'modelcache:clear {user?} {--key=}';
 
     protected $description = 'Clear the user cache';
 
@@ -24,9 +24,9 @@ class ClearCommand extends Command
         if ($key = $this->option('key')) {
             $user = User::findOrFail($this->argument('user'));
 
-            return UserCache::forget($user, $key);
+            return ModelCache::forget($user, $key);
         }
 
-        UserCache::clear();
+        ModelCache::clear();
     }
 }

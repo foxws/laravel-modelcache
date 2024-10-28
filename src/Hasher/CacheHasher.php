@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\Hasher;
+namespace Foxws\ModelCache\Hasher;
 
 use Illuminate\Foundation\Auth\User;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace Foxws\UserCache\Facades;
+namespace Foxws\ModelCache\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Foxws\UserCache\UserCache
+ * @see \Foxws\ModelCache\ModelCache
  */
-class UserCache extends Facade
+class ModelCache extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Foxws\UserCache\UserCache::class;
+        return \Foxws\ModelCache\ModelCache::class;
     }
 }

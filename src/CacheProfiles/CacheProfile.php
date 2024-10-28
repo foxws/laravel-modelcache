@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\CacheProfiles;
+namespace Foxws\ModelCache\CacheProfiles;
 
 use DateTime;
 

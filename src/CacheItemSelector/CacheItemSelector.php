@@ -1,9 +1,9 @@
 <?php
 
-namespace Foxws\UserCache\CacheItemSelector;
+namespace Foxws\ModelCache\CacheItemSelector;
 
-use Foxws\UserCache\Hasher\CacheHasher;
-use Foxws\UserCache\UserCacheRepository;
+use Foxws\ModelCache\Hasher\CacheHasher;
+use Foxws\ModelCache\ModelCacheRepository;
 use Illuminate\Foundation\Auth\User;
 
 class CacheItemSelector extends AbstractCacheBuilder
@@ -12,7 +12,7 @@ class CacheItemSelector extends AbstractCacheBuilder
 
     public function __construct(
         protected CacheHasher $hasher,
-        protected UserCacheRepository $cache,
+        protected ModelCacheRepository $cache,
         protected User $user,
     ) {}
 
@@ -31,7 +31,7 @@ class CacheItemSelector extends AbstractCacheBuilder
 
                 return $this->hasher->getHashFor($this->user, $key);
             })
-            ->filter(fn ($hash) => $this->cache->has($hash))
-            ->each(fn ($hash) => $this->cache->forget($hash));
+            ->filter(fn($hash) => $this->cache->has($hash))
+            ->each(fn($hash) => $this->cache->forget($hash));
     }
 }

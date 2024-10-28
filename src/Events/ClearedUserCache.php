@@ -1,5 +1,5 @@
 <?php
 
-namespace Foxws\UserCache\Events;
+namespace Foxws\ModelCache\Events;
 
-class ClearedUserCache {}
+class ClearedModelCache {}

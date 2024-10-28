@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\Serializers;
+namespace Foxws\ModelCache\Serializers;
 
 interface Serializer
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Foxws\UserCache\Exceptions;
+namespace Foxws\ModelCache\Exceptions;
 
 use Exception;
 

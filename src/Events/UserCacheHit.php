@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Events;
+namespace Foxws\ModelCache\Events;
 
-class UserCacheHit
+class ModelCacheHit
 {
     public function __construct(
         public string $key,

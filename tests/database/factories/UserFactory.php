@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Tests\Database\Factories;
+namespace Foxws\ModelCache\Tests\Database\Factories;
 
-use Foxws\UserCache\Tests\Models\User;
+use Foxws\ModelCache\Tests\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

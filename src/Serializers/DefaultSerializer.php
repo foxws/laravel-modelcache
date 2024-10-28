@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Serializers;
+namespace Foxws\ModelCache\Serializers;
 
-use Foxws\UserCache\Exceptions\CouldNotUnserialize;
+use Foxws\ModelCache\Exceptions\CouldNotUnserialize;
 
 class DefaultSerializer implements Serializer
 {

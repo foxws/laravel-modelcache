@@ -1,9 +1,9 @@
 <?php
 
-namespace Foxws\UserCache\Tests\Models;
+namespace Foxws\ModelCache\Tests\Models;
 
-use Foxws\UserCache\Concerns\InteractsWithUserCache;
-use Foxws\UserCache\Tests\Database\Factories\UserFactory;
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Foxws\ModelCache\Tests\Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
-    use InteractsWithUserCache;
+    use InteractsWithModelCache;
     use Notifiable;
 
     protected $guarded = [];

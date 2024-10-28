@@ -1,15 +1,15 @@
 # Simple Laravel caching trait for user data
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/foxws/laravel-user-cache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-user-cache)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-user-cache/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/foxws/laravel-user-cache/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-user-cache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-user-cache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-user-cache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-user-cache)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-user-cache.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-user-cache)
+[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-modelcache.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-modelcache)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
@@ -20,19 +20,19 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require foxws/laravel-user-cache
+composer require foxws/laravel-modelcache
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-user-cache-config"
+php artisan vendor:publish --tag="laravel-modelcache-config"
 ```
 
 ## Usage
 
 ```php
-$userCache = new Foxws\UserCache();
+$userCache = new Foxws\ModelCache();
 echo $userCache->echoPhrase('Hello, Foxws!');
 ```
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Hasher;
+namespace Foxws\ModelCache\Hasher;
 
-use Foxws\UserCache\CacheProfiles\CacheProfile;
+use Foxws\ModelCache\CacheProfiles\CacheProfile;
 use Illuminate\Foundation\Auth\User;
 
 class DefaultHasher implements CacheHasher
@@ -17,7 +17,7 @@ class DefaultHasher implements CacheHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($key);
 
-        return 'usercache-'.hash(
+        return 'modelcache-' . hash(
             'xxh128',
             "{$user->getKey()}:{$key}:{$cacheNameSuffix}"
         );

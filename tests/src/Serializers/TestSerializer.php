@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\Test\Serializers;
+namespace Foxws\ModelCache\Test\Serializers;
 
-use Foxws\UserCache\Serializers\DefaultSerializer;
+use Foxws\ModelCache\Serializers\DefaultSerializer;
 
 class TestSerializer extends DefaultSerializer
 {

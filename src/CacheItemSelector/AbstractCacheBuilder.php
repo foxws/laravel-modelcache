@@ -1,8 +1,8 @@
 <?php
 
-namespace Foxws\UserCache\CacheItemSelector;
+namespace Foxws\ModelCache\CacheItemSelector;
 
-use Foxws\UserCache\Tests\Models\User;
+use Foxws\ModelCache\Tests\Models\User;
 
 abstract class AbstractCacheBuilder
 {

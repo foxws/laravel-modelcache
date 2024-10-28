@@ -1,18 +1,18 @@
 <?php
 
-namespace Foxws\UserCache;
+namespace Foxws\ModelCache;
 
-use Foxws\UserCache\CacheItemSelector\CacheItemSelector;
-use Foxws\UserCache\CacheProfiles\CacheProfile;
-use Foxws\UserCache\Events\ClearedUserCache;
-use Foxws\UserCache\Events\ClearingUserCache;
-use Foxws\UserCache\Hasher\CacheHasher;
+use Foxws\ModelCache\CacheItemSelector\CacheItemSelector;
+use Foxws\ModelCache\CacheProfiles\CacheProfile;
+use Foxws\ModelCache\Events\ClearedModelCache;
+use Foxws\ModelCache\Events\ClearingModelCache;
+use Foxws\ModelCache\Hasher\CacheHasher;
 use Illuminate\Foundation\Auth\User;
 
-class UserCache
+class ModelCache
 {
     public function __construct(
-        protected UserCacheRepository $cache,
+        protected ModelCacheRepository $cache,
         protected CacheHasher $hasher,
         protected CacheProfile $cacheProfile,
     ) {
@@ -46,7 +46,7 @@ class UserCache
 
     public function hasBeenCached(User $user, string $key): bool
     {
-        return config('usercache.enabled')
+        return config('modelcache.enabled')
             ? $this->cache->has($this->hasher->getHashFor($user, $key))
             : false;
     }
@@ -58,22 +58,22 @@ class UserCache
 
     public function clear(array $keys = []): void
     {
-        event(new ClearingUserCache);
+        event(new ClearingModelCache);
 
         $this->cache->clear();
 
-        event(new ClearedUserCache);
+        event(new ClearedModelCache);
     }
 
     public function forget(User $user, string|array $keys): self
     {
-        event(new ClearingUserCache);
+        event(new ClearingModelCache);
 
         $keys = is_array($keys) ? $keys : func_get_args();
 
         $this->selectCachedItems($user)->forKeys($keys)->forget();
 
-        event(new ClearedUserCache);
+        event(new ClearedModelCache);
 
         return $this;
     }
