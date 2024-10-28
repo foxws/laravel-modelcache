@@ -23,7 +23,7 @@ php artisan vendor:publish --tag="modelcache-config"
 
 ## Usage
 
-Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent model:
+Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent models:
 
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
@@ -36,18 +36,29 @@ class User extends Authenticatable
 
 ```
 
+```php
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Illuminate\Database\Eloquent\Model;
+
+class Video extends Model
+{
+    use InteractsWithModelCache;
+}
+
+```
+
 To cache a model value:
 
 ```php
 User::first()->modelCache('randomSeed', 0.5);
-Video::first()->modelCache('currentTime', 20, now()->addDay()); // ttl
+Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
 ```
 
 To get a cached value:
 
 ```php
 User::first()->modelCached('randomSeed');
-Video::first()->modelCached('currentTime', $default);
+Video::first()->modelCached('currentTime', $default); // with fallback
 ```
 
 To forget a value:
@@ -58,7 +69,7 @@ Video::first()->modelCacheForget('currentTime');
 
 ### Creating a custom cache profile
 
-To determine which requests should be cached, and for how long, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
+To determine which values should be cached, and for how long, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
