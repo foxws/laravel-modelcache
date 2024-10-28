@@ -4,7 +4,6 @@ namespace Foxws\ModelCache\Commands;
 
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Auth\User;
 
 class ClearCommand extends Command
 {
