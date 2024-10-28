@@ -22,9 +22,7 @@ class ClearCommand extends Command
     protected function clear()
     {
         if ($key = $this->option('key')) {
-            $user = User::findOrFail($this->argument('user'));
-
-            return ModelCache::forget($user, $key);
+            return ModelCache::forget($this->argument('model'), $key);
         }
 
         ModelCache::clear();

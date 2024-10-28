@@ -2,9 +2,11 @@
 
 namespace Foxws\ModelCache\CacheProfiles;
 
+use Illuminate\Database\Eloquent\Model;
+
 class CacheAllSuccessful extends BaseCacheProfile
 {
-    public function shouldUseCache(string $key): bool
+    public function shouldUseCache(Model $model, string $key): bool
     {
         return true;
     }

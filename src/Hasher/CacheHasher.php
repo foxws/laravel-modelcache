@@ -2,9 +2,9 @@
 
 namespace Foxws\ModelCache\Hasher;
 
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
 
 interface CacheHasher
 {
-    public function getHashFor(User $user, string $key): string;
+    public function getHashFor(Model $model, string $key): string;
 }

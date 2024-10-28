@@ -3,6 +3,7 @@
 namespace Foxws\ModelCache\CacheProfiles;
 
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,14 +14,14 @@ abstract class BaseCacheProfile implements CacheProfile
         return config('modelcache.enabled');
     }
 
-    public function cacheValueUntil(string $key): DateTime
+    public function cacheValueUntil(Model $model, string $key): DateTime
     {
         return Carbon::now()->addSeconds(
             config('modelcache.cache_lifetime_in_seconds')
         );
     }
 
-    public function useCacheNameSuffix(string $key): string
+    public function useCacheNameSuffix(Model $model, string $key): string
     {
         return Auth::check()
             ? (string) Auth::id()

@@ -2,12 +2,13 @@
 
 namespace Foxws\ModelCache;
 
+use ArrayAccess;
 use Foxws\ModelCache\CacheItemSelector\CacheItemSelector;
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
 use Foxws\ModelCache\Events\ClearedModelCache;
 use Foxws\ModelCache\Events\ClearingModelCache;
 use Foxws\ModelCache\Hasher\CacheHasher;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
 
 class ModelCache
 {
@@ -24,39 +25,39 @@ class ModelCache
         return $this->cacheProfile->enabled();
     }
 
-    public function shouldCache(string $key, mixed $value = null): bool
+    public function shouldCache(Model $model, string $key, mixed $value = null): bool
     {
-        if (! $this->cacheProfile->shouldUseCache($key)) {
+        if (! $this->cacheProfile->shouldUseCache($model, $key)) {
             return false;
         }
 
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function cache(User $user, string $key, mixed $value = null, ?int $ttl = null): mixed
+    public function cache(Model $model, string $key, mixed $value = null, ?int $ttl = null): mixed
     {
         $this->cache->put(
-            $this->hasher->getHashFor($user, $key),
+            $this->hasher->getHashFor($model, $key),
             $value,
-            $ttl ?? $this->cacheProfile->cacheValueUntil($value)
+            $ttl ?? $this->cacheProfile->cacheValueUntil($model, $key)
         );
 
         return $value;
     }
 
-    public function hasBeenCached(User $user, string $key): bool
+    public function hasBeenCached(Model $model, string $key): bool
     {
         return config('modelcache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($user, $key))
+            ? $this->cache->has($this->hasher->getHashFor($model, $key))
             : false;
     }
 
-    public function getCachedValue(User $user, string $key): mixed
+    public function getCachedValue(Model $model, string $key): mixed
     {
-        return $this->cache->get($this->hasher->getHashFor($user, $key));
+        return $this->cache->get($this->hasher->getHashFor($model, $key));
     }
 
-    public function clear(array $keys = []): void
+    public function clear(Model $model, array|ArrayAccess $keys = []): void
     {
         event(new ClearingModelCache);
 
@@ -65,21 +66,21 @@ class ModelCache
         event(new ClearedModelCache);
     }
 
-    public function forget(User $user, string|array $keys): self
+    public function forget(Model $model, array|ArrayAccess $keys = []): self
     {
         event(new ClearingModelCache);
 
         $keys = is_array($keys) ? $keys : func_get_args();
 
-        $this->selectCachedItems($user)->forKeys($keys)->forget();
+        $this->selectCachedItems($model)->forKeys($keys)->forget();
 
         event(new ClearedModelCache);
 
         return $this;
     }
 
-    public function selectCachedItems(User $user): CacheItemSelector
+    public function selectCachedItems(Model $model): CacheItemSelector
     {
-        return new CacheItemSelector($this->hasher, $this->cache, $user);
+        return new CacheItemSelector($this->hasher, $this->cache, $model);
     }
 }

@@ -3,7 +3,7 @@
 namespace Foxws\ModelCache\Hasher;
 
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
 
 class DefaultHasher implements CacheHasher
 {
@@ -13,18 +13,27 @@ class DefaultHasher implements CacheHasher
         //
     }
 
-    public function getHashFor(User $user, string $key): string
+    public function getHashFor(Model $model, string $key): string
     {
-        $cacheNameSuffix = $this->getCacheNameSuffix($key);
+        $cacheNameSuffix = $this->getCacheNameSuffix($model, $key);
 
-        return 'modelcache-'.hash(
+        return 'modelcache-' . hash(
             'xxh128',
-            "{$user->getKey()}:{$key}:{$cacheNameSuffix}"
+            implode(':', [$this->getNormalizedModel($model), $key, $cacheNameSuffix])
         );
     }
 
-    protected function getCacheNameSuffix(string $key)
+    protected function getNormalizedModel(Model $model): string
     {
-        return $this->cacheProfile->useCacheNameSuffix($key);
+        return "{$model->getMorphClass()}:{$model->getKey()}";
+    }
+
+    protected function getCacheNameSuffix(Model $model, string $key): string
+    {
+        if (method_exists($model, 'cacheNameSuffix')) {
+            return $model->cacheNameSuffix($key);
+        }
+
+        return $this->cacheProfile->useCacheNameSuffix($model, $key);
     }
 }
