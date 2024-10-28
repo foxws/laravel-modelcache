@@ -2,23 +2,33 @@
 
 namespace Foxws\ModelCache\CacheItemSelector;
 
+use ArrayAccess;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Foxws\ModelCache\ModelCacheRepository;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class CacheItemSelector extends AbstractCacheBuilder
 {
-    protected array $keys;
+    protected ?Model $model = null;
+
+    protected ?array $keys = null;
 
     public function __construct(
         protected CacheHasher $hasher,
         protected ModelCacheRepository $cache,
-        protected User $user,
     ) {}
 
-    public function forKeys(string|array $keys): static
+    public function forModel(?Model $model = null): static
     {
-        $this->keys = is_array($keys) ? $keys : func_get_args();
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function forKeys(ArrayAccess|array|string|null $keys = null): static
+    {
+        $this->keys = Arr::wrap($keys);
 
         return $this;
     }
@@ -27,11 +37,11 @@ class CacheItemSelector extends AbstractCacheBuilder
     {
         collect($this->keys)
             ->map(function ($key) {
-                $key = $this->build($this->user, $key);
+                $key = $this->build($key);
 
-                return $this->hasher->getHashFor($this->user, $key);
+                return $this->hasher->getHashFor($this->model, $key);
             })
-            ->filter(fn ($hash) => $this->cache->has($hash))
-            ->each(fn ($hash) => $this->cache->forget($hash));
+            ->filter(fn($hash) => $this->cache->has($hash))
+            ->each(fn($hash) => $this->cache->forget($hash));
     }
 }

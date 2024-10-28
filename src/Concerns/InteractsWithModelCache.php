@@ -2,25 +2,31 @@
 
 namespace Foxws\ModelCache\Concerns;
 
+use DateTime;
 use Foxws\ModelCache\Facades\ModelCache;
 
 trait InteractsWithModelCache
 {
-    public function cacheStore(string $key, mixed $value = null): mixed
+    public function modelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
     {
         if (! ModelCache::shouldCache($this, $key, $value)) {
             return null;
         }
 
-        return ModelCache::cache($this, $key, $value);
+        return ModelCache::cache($this, $key, $value, $ttl);
     }
 
-    public function cacheStored(string $key, mixed $default = null): mixed
+    public function modelCached(string $key, mixed $default = null): mixed
     {
         if (! ModelCache::enabled()) {
             return $default;
         }
 
         return ModelCache::getCachedValue($this, $key) ?? $default;
+    }
+
+    public function modelCacheForget(string $key): void
+    {
+        ModelCache::forget($this, $key);
     }
 }

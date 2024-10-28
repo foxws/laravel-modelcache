@@ -2,6 +2,7 @@
 
 namespace Foxws\ModelCache;
 
+use DateTime;
 use Foxws\ModelCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 
@@ -14,7 +15,7 @@ class ModelCacheRepository
         //
     }
 
-    public function put(string $key, mixed $value = null, \DateTime|int $seconds): void
+    public function put(string $key, mixed $value = null, DateTime|int|null $seconds = null): void
     {
         $this->cache->put($key, $this->serializer->serialize($value), is_numeric($seconds) ? now()->addSeconds($seconds) : $seconds);
     }

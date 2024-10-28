@@ -2,8 +2,6 @@
 
 namespace Foxws\ModelCache\CacheItemSelector;
 
-use Illuminate\Database\Eloquent\Model;
-
 abstract class AbstractCacheBuilder
 {
     protected ?string $cacheNameSuffix = null;
@@ -15,7 +13,7 @@ abstract class AbstractCacheBuilder
         return $this;
     }
 
-    protected function build(Model $model, string $key): string
+    protected function build(string $key): string
     {
         if (isset($this->cacheNameSuffix)) {
             $key .= $this->cacheNameSuffix;
