@@ -3,7 +3,6 @@
 namespace Foxws\ModelCache;
 
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
-use Foxws\ModelCache\Commands\ClearCommand;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Foxws\ModelCache\Serializers\Serializer;
 use Illuminate\Container\Container;
@@ -17,10 +16,7 @@ class ModelCacheServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-modelcache')
-            ->hasConfigFile('modelcache')
-            ->hasCommands([
-                ClearCommand::class,
-            ]);
+            ->hasConfigFile('modelcache');
     }
 
     public function packageBooted()
