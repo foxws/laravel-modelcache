@@ -55,5 +55,15 @@ abstract class TestCase extends Orchestra
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->uuid();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('title');
+            $table->text('content')->nullable();
+            $table->timestamp('published_at')->nullable();
+            $table->timestamps();
+        });
     }
 }
