@@ -18,7 +18,7 @@ trait InteractsWithModelCache
 
     public function modelCached(string $key, mixed $default = null): mixed
     {
-        if (! ModelCache::enabled()) {
+        if (! ModelCache::enabled() || ! $this->isModelCached($key)) {
             return $default;
         }
 
