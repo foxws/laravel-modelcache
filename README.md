@@ -73,6 +73,8 @@ To determine which values should be cached, and for how long, a cache profile cl
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
+For example you could create a cache profile that only caches when an user is authenticated.
+
 ## Testing
 
 ```bash
