@@ -1,7 +1,7 @@
 <?php
 
-use Foxws\ModelCache\Tests\TestCase;
 use Foxws\ModelCache\ModelCacheRepository;
+use Foxws\ModelCache\Tests\TestCase;
 use Illuminate\Cache\Repository;
 
 uses(TestCase::class);
