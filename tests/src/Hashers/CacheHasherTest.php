@@ -37,6 +37,7 @@ it('can generate a hash for a cache', function () {
 it('can store values using model concern', function () {
     $this->user->modelCache('cacheKey', 'cacheValue');
     $this->post->modelCache('cacheFoo', 'cacheBar');
+    $this->post->modelCache('cacheBar', 'cacheFoo', now()->addDay());
 
     assertEquals('cacheValue', $this->user->modelCached('cacheKey'));
     assertEquals('cacheBar', $this->post->modelCached('cacheFoo'));

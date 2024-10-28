@@ -5,15 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-modelcache.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-modelcache)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package does not cache models, it gives you helpers to populate the Laravel Cache using a model. By default, logged in users will each have their own separate cache.
 
 ## Installation
 
@@ -26,15 +18,49 @@ composer require foxws/laravel-modelcache
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-modelcache-config"
+php artisan vendor:publish --tag="modelcache-config"
 ```
 
 ## Usage
 
+Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent model:
+
 ```php
-$userCache = new Foxws\ModelCache();
-echo $userCache->echoPhrase('Hello, Foxws!');
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    use InteractsWithModelCache;
+}
+
 ```
+
+To cache a model value:
+
+```php
+User::first()->modelCache('randomSeed', 0.5);
+Video::first()->modelCache('currentTime', 20, now()->addDay()); // ttl
+```
+
+To get a cached value:
+
+```php
+User::first()->modelCached('randomSeed');
+Video::first()->modelCached('currentTime', $default);
+```
+
+To forget a value:
+
+```php
+Video::first()->modelCacheForget('currentTime');
+```
+
+### Creating a custom cache profile
+
+To determine which requests should be cached, and for how long, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
+
+You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
 ## Testing
 
