@@ -25,6 +25,11 @@ trait InteractsWithModelCache
         return ModelCache::getCachedValue($this, $key) ?? $default;
     }
 
+    public function isModelCached(string $key): bool
+    {
+        return ModelCache::hasBeenCached($this, $key);
+    }
+
     public function modelCacheForget(string $key): void
     {
         ModelCache::forget($this, $key);
