@@ -2,6 +2,7 @@
 
 namespace Foxws\ModelCache\Tests\Models;
 
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Foxws\ModelCache\Tests\Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Post extends Model
 {
     use HasFactory;
+    use InteractsWithModelCache;
     use SoftDeletes;
 
     protected $guarded = [];
