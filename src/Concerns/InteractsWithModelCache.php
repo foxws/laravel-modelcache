@@ -8,15 +8,19 @@ trait InteractsWithModelCache
 {
     public function cacheStore(string $key, mixed $value = null): mixed
     {
-        if (! ModelCache::shouldCache($key, $value)) {
+        if (! ModelCache::shouldCache($this, $key, $value)) {
             return null;
         }
 
         return ModelCache::cache($this, $key, $value);
     }
 
-    public function cacheStored(string $key): mixed
+    public function cacheStored(string $key, mixed $default = null): mixed
     {
-        return ModelCache::getCachedValue($this, $key);
+        if (! ModelCache::enabled()) {
+            return $default;
+        }
+
+        return ModelCache::getCachedValue($this, $key) ?? $default;
     }
 }
