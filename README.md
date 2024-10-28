@@ -93,8 +93,10 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [francoism90](https://github.com/foxws)
-- [All Contributors](../../contributors)
+This package is completely based on the perfect [space/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package.
+It has been modified to use Eloquent models instead of requests.
+
+Please consider to sponsor Spatie, such as purchasing their excellent courses. :)
 
 ## License
 
