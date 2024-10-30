@@ -27,12 +27,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return UserFactory::new();
     }
-
-    protected function useCacheNameSuffix(string $key): string
-    {
-        if (Auth::check() && Auth::id() === $this->getKey()) {
-            return '';
-        }
-
-        return $this->getKey();
 }
