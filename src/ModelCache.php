@@ -38,9 +38,9 @@ class ModelCache
     public function cache(Model $model, string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
     {
         $ttl ??= $this->cacheProfile->cacheValueUntil($model, $key);
-        
+
         $hash = $this->hasher->getHashFor($model, $key);
-        
+
         $this->cache->put($hash, $value, $ttl);
 
         return $hash;
@@ -54,7 +54,7 @@ class ModelCache
     }
 
     public function getCachedValue(Model $model, string $key): mixed
-    {      
+    {
         return $this->cache->get($this->hasher->getHashFor($model, $key));
     }
 
