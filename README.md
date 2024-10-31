@@ -27,17 +27,6 @@ Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your 
 
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
-{
-    use InteractsWithModelCache;
-}
-
-```
-
-```php
-use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
@@ -47,24 +36,48 @@ class Video extends Model
 
 ```
 
-To cache a model value:
+### Model instances
+
+To set a cache model value:
 
 ```php
-User::first()->modelCache('randomSeed', 0.5);
+Video::first()->modelCache('currentTime', 20);
 Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
 ```
 
-To get a cached value:
+To retrieve a cached model value:
 
 ```php
-User::first()->modelCached('randomSeed');
+Video::first()->modelCached('currentTime');
 Video::first()->modelCached('currentTime', $default); // with fallback
 ```
 
-To forget a value:
+To forget a cached model value:
 
 ```php
 Video::first()->modelCacheForget('currentTime');
+Video::first()->modelCacheForget('viewed_at');
+```
+
+### Model class caching
+
+To set a model class cache value:
+
+```php
+Video::modelClassCache('randomSeed', 0.1);
+```
+
+To retrieve a model class cached value:
+
+```php
+Video::modelClassCached('randomSeed');
+Video::modelClassCached('randomSeed', $default);
+```
+
+To forget a model class cached value:
+
+```php
+Video::modelClassCacheForget('randomSeed');
 ```
 
 ### Creating a custom cache profile
@@ -73,7 +86,7 @@ To determine which values should be cached, and for how long, a cache profile cl
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
-For example you could create a cache profile that only caches when an user is authenticated.
+It is also possible to overrule the cache prefix using the model instance. For this create a method named `cacheNameSuffix` on the model instance.
 
 ## Testing
 
