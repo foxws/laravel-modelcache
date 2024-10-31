@@ -7,7 +7,7 @@ use Foxws\ModelCache\Facades\ModelCache;
 
 trait InteractsWithModelCache
 {
-    public static function modelCacheClass(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
+    public static function modelClassCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
     {
         if (! ModelCache::shouldCache(static::class, $key, $value)) {
             return null;
@@ -16,7 +16,7 @@ trait InteractsWithModelCache
         return ModelCache::cache(static::class, $key, $value, $ttl);
     }
 
-    public static function modelCachedClass(string $key, mixed $default = null): mixed
+    public static function modelClassCached(string $key, mixed $default = null): mixed
     {
         if (! ModelCache::enabled() || ! ModelCache::hasBeenCached(static::class, $key)) {
             return $default;
@@ -25,7 +25,7 @@ trait InteractsWithModelCache
         return ModelCache::getCachedValue(static::class, $key) ?? $default;
     }
 
-    public static function modelCacheClassForget(string $key): void
+    public static function modelClassCacheForget(string $key): void
     {
         ModelCache::forget(static::class, $key);
     }

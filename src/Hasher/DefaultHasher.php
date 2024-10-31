@@ -25,7 +25,7 @@ class DefaultHasher implements CacheHasher
 
     protected function getNormalizedModel(Model $model): string
     {
-        return "{$model->getMorphClass()}:{$model->getKey()}";
+        return implode(':', [$model->getMorphClass(), $model->getKey()]);
     }
 
     protected function getCacheNameSuffix(Model $model, string $key): string

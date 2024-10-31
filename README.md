@@ -64,20 +64,20 @@ Video::first()->modelCacheForget('viewed_at');
 To register a model class cache value:
 
 ```php
-Video::modelCacheClass('randomSeed', 0.1);
+Video::modelClassCache('randomSeed', 0.1);
 ```
 
 To retrieve a model class cached value:
 
 ```php
-Video::modelCachedClass('randomSeed');
-Video::modelCachedClass('randomSeed', $default);
+Video::modelClassCached('randomSeed');
+Video::modelClassCached('randomSeed', $default);
 ```
 
 To forget a model class cached value:
 
 ```php
-Video::modelCacheClassForget('randomSeed');
+Video::modelClassCacheForget('randomSeed');
 ```
 
 ### Creating a custom cache profile
