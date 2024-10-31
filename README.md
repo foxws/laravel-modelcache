@@ -27,17 +27,6 @@ Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your 
 
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
-{
-    use InteractsWithModelCache;
-}
-
-```
-
-```php
-use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
@@ -47,17 +36,19 @@ class Video extends Model
 
 ```
 
+### Model instances
+
 To cache a model value:
 
 ```php
-User::first()->modelCache('randomSeed', 0.5);
+Video::first()->modelCache('currentTime', 20);
 Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
 ```
 
 To get a cached value:
 
 ```php
-User::first()->modelCached('randomSeed');
+Video::first()->modelCached('currentTime');
 Video::first()->modelCached('currentTime', $default); // with fallback
 ```
 
@@ -65,6 +56,28 @@ To forget a value:
 
 ```php
 Video::first()->modelCacheForget('currentTime');
+Video::first()->modelCacheForget('viewed_at');
+```
+
+### Model class caching
+
+To register a model class cache value:
+
+```php
+Video::modelCacheClass('randomSeed', 0.1);
+```
+
+To retrieve a model class cached value:
+
+```php
+Video::modelCachedClass('randomSeed');
+Video::modelCachedClass('randomSeed', $default);
+```
+
+To forget a model class cached value:
+
+```php
+Video::modelCacheClassForget('randomSeed');
 ```
 
 ### Creating a custom cache profile
