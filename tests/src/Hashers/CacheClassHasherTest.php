@@ -26,7 +26,7 @@ it('can generate a hash for a class', function () {
     );
 
     assertEquals(
-        'modelcache-3f3822d73926df0c7a71519e9914ce3a',
+        'modelcache-bdd1645bcba416cbde602e79fd62c092',
         $this->cacheHasher->getHashFor(app(Post::class), 'last_viewed')
     );
 });
