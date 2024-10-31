@@ -18,7 +18,7 @@ trait InteractsWithModelCache
 
     public static function modelClassCached(string $key, mixed $default = null): mixed
     {
-        if (! ModelCache::enabled() || ! static::isModelClassCached(static::class, $key)) {
+        if (! ModelCache::enabled() || ! static::isModelClassCached($key)) {
             return $default;
         }
 
