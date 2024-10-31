@@ -100,7 +100,7 @@ class Video extends Model
      */
     protected function cacheNameSuffix(): string
     {
-        return 'foo';
+        return 'my-modelcache-prefix';
     }
 }
 ```
