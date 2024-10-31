@@ -62,6 +62,8 @@ class ModelCache
 
     public function getCachedValue(Model|string $model, string $key): mixed
     {
+        $model = $this->isModelCacheInstance($model);
+
         return $this->cache->get($this->hasher->getHashFor($model, $key));
     }
 
