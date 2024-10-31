@@ -96,7 +96,7 @@ class Video extends Model
     use InteractsWithModelCache;
 
     /**
-     * @warning When using a overule, it doesn't create a separated cache for users.
+     * @doc When using a overule, it doesn't create a separated cache by default for authenticated users.
      */
     protected function cacheNameSuffix(): string
     {
