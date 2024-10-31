@@ -22,12 +22,12 @@ it('can generate a hash for a class', function () {
 
     assertEquals(
         'modelClassCache-7830f1c558a69446cbe74b50b6871528',
-        $this->cacheHasher->getHashFor(User::class, 'last_viewed')
+        $this->cacheHasher->getHashFor(app(User::class), 'last_viewed')
     );
 
     assertEquals(
         'modelClassCache-3f3822d73926df0c7a71519e9914ce3a',
-        $this->cacheHasher->getHashFor(Post::class, 'last_viewed')
+        $this->cacheHasher->getHashFor(app(Post::class), 'last_viewed')
     );
 });
 
