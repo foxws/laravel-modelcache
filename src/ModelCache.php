@@ -35,8 +35,12 @@ class ModelCache
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function cache(Model $model, string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
+    public function cache(Model|string $model, string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
     {
+        if (is_string($model)) {
+            $model = app($model);
+        }
+
         $ttl ??= $this->cacheProfile->cacheValueUntil($model, $key);
 
         $hash = $this->hasher->getHashFor($model, $key);
