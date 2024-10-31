@@ -38,21 +38,21 @@ class Video extends Model
 
 ### Model instances
 
-To cache a model value:
+To set a cache model value:
 
 ```php
 Video::first()->modelCache('currentTime', 20);
 Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
 ```
 
-To get a cached value:
+To retrieve a cached model value:
 
 ```php
 Video::first()->modelCached('currentTime');
 Video::first()->modelCached('currentTime', $default); // with fallback
 ```
 
-To forget a value:
+To forget a cached model value:
 
 ```php
 Video::first()->modelCacheForget('currentTime');
@@ -61,7 +61,7 @@ Video::first()->modelCacheForget('viewed_at');
 
 ### Model class caching
 
-To register a model class cache value:
+To set a model class cache value:
 
 ```php
 Video::modelClassCache('randomSeed', 0.1);
@@ -86,7 +86,7 @@ To determine which values should be cached, and for how long, a cache profile cl
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
-For example you could create a cache profile that only caches when an user is authenticated.
+It is also possible to overrule the cache prefix using the model instance. For this create a method named `cacheNameSuffix` on the model instance.
 
 ## Testing
 
