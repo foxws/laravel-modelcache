@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This package does not cache models, it gives you helpers to manage the Laravel Cache using a model. By default, logged in users will each have their own separate cache prefix.
+This package does not cache models, it gives you helpers to manage the Laravel Cache using a model instance. By default, logged in users will each have their own separate cache prefix.
 
 ## Installation
 
@@ -33,7 +33,6 @@ class Video extends Model
 {
     use InteractsWithModelCache;
 }
-
 ```
 
 ### Model instances
@@ -42,21 +41,21 @@ To set a cache model value:
 
 ```php
 Video::first()->modelCache('currentTime', 20);
-Video::first()->modelCache('currentTime', 20, now()->addDay()); // cache for one day
+Video::first()->modelCache('randomSeed', 20, now()->addDay()); // cache for one day
 ```
 
 To retrieve a cached model value:
 
 ```php
 Video::first()->modelCached('currentTime');
-Video::first()->modelCached('currentTime', $default); // with fallback
+Video::first()->modelCached('randomSeed', $default); // with fallback
 ```
 
 To forget a cached model value:
 
 ```php
 Video::first()->modelCacheForget('currentTime');
-Video::first()->modelCacheForget('viewed_at');
+Video::first()->modelCacheForget('randomSeed');
 ```
 
 ### Model class caching
@@ -86,7 +85,25 @@ To determine which values should be cached, and for how long, a cache profile cl
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
-It is also possible to overrule the cache prefix using the model instance. For this create a method named `cacheNameSuffix` on the model instance.
+It is also possible to overrule the cache prefix using the model instance. For this create a method named `cacheNameSuffix` on the model instance:
+
+```php
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Illuminate\Database\Eloquent\Model;
+
+class Video extends Model
+{
+    use InteractsWithModelCache;
+
+    /**
+     * @warning When using a overule, it doesn't create a separated cache for users.
+     */
+    protected function cacheNameSuffix(): string
+    {
+        return 'foo';
+    }
+}
+```
 
 ## Testing
 
