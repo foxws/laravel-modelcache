@@ -21,12 +21,12 @@ it('can generate a hash for a class', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
     assertEquals(
-        'modelClassCache-caf41bdf71501c06d747ec2b930d36ed',
+        'modelcache-caf41bdf71501c06d747ec2b930d36ed',
         $this->cacheHasher->getHashFor(app(User::class), 'last_viewed')
     );
 
     assertEquals(
-        'modelClassCache-3f3822d73926df0c7a71519e9914ce3a',
+        'modelcache-3f3822d73926df0c7a71519e9914ce3a',
         $this->cacheHasher->getHashFor(app(Post::class), 'last_viewed')
     );
 });
