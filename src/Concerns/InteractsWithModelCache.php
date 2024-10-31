@@ -18,7 +18,7 @@ trait InteractsWithModelCache
 
     public static function modelClassCached(string $key, mixed $default = null): mixed
     {
-        if (! ModelCache::enabled() || ! ModelCache::hasBeenCached(static::class, $key)) {
+        if (! ModelCache::enabled() || ! static::isModelClassCached(static::class, $key)) {
             return $default;
         }
 
@@ -28,6 +28,11 @@ trait InteractsWithModelCache
     public static function modelClassCacheForget(string $key): void
     {
         ModelCache::forget(static::class, $key);
+    }
+
+    public static function isModelClassCached(string $key): bool
+    {
+        return ModelCache::hasBeenCached(static::class, $key);
     }
 
     public function modelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
