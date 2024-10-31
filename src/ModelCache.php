@@ -69,9 +69,9 @@ class ModelCache
 
     public function forget(Model|string $model, array|ArrayAccess|string $keys): self
     {
-        event(new ClearingModelCache);
-
         $model = $this->isModelCacheInstance($model);
+
+        event(new ClearingModelCache);
 
         $this->selectCachedItems($model)->forKeys($keys)->forget();
 
