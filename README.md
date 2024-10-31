@@ -64,6 +64,7 @@ To set a model class cache value:
 
 ```php
 Video::modelClassCache('randomSeed', 0.1);
+Video::modelClassCache('randomSeed', 0.1, now()->addDay()); // cache for one day
 ```
 
 To retrieve a model class cached value:
