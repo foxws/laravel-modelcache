@@ -99,9 +99,9 @@ class Video extends Model
     /**
      * @doc When using a overule, it doesn't create a separated cache by default for authenticated users.
      */
-    protected function cacheNameSuffix(): string
+    protected function cacheNameSuffix(string $key): string
     {
-        return 'my-modelcache-prefix';
+        return "{$key}:my-modelcache-prefix";
     }
 }
 ```
