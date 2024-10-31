@@ -21,7 +21,7 @@ it('can generate a hash for a class', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
     assertEquals(
-        'modelClassCache-7830f1c558a69446cbe74b50b6871528',
+        'modelClassCache-caf41bdf71501c06d747ec2b930d36ed',
         $this->cacheHasher->getHashFor(app(User::class), 'last_viewed')
     );
 
