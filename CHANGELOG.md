@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.0.0 - 2024-12-27
+
+### What's Changed
+
+* code refactoring by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/3
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/0.0.4...1.0.0
+
 ## 0.0.4 - 2024-10-31
 
 ### What's Changed
