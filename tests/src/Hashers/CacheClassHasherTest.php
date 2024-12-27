@@ -50,6 +50,6 @@ it('can remove values using model concern', function () {
     User::forgetModelCache('cacheKey');
     Post::forgetModelCache('cacheFoo');
 
-    assertFalse(User::isModelCached('cacheKey'));
-    assertFalse(Post::isModelCached('cacheFoo'));
+    assertFalse(User::hasModelCache('cacheKey'));
+    assertFalse(Post::hasModelCache('cacheFoo'));
 });
