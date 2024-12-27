@@ -54,7 +54,7 @@ trait InteractsWithModelCache
         return static::getModelCache(model: $this, key: $key, default: $default);
     }
 
-    public function modelCacheForget(string $key): ModelCache
+    public function modelCacheForget(string $key): mixed
     {
         return static::forgetModelCache(model: $this, key: $key);
     }
