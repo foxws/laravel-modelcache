@@ -23,6 +23,8 @@ php artisan vendor:publish --tag="modelcache-config"
 
 ## Usage
 
+### Model Concern
+
 Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent model:
 
 ```php
@@ -32,6 +34,29 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use InteractsWithModelCache;
+}
+```
+
+### Facade
+
+It is also possible to use the `ModelCache` Facade directly:
+
+```php
+use Foxws\ModelCache\Facades\ModelCache;
+
+class MyActionClass
+{
+    public function handle(Video $model): void
+    {
+        if (! ModelCache::enabled()) {
+            // modelcaching is disabled
+            return;
+        }
+
+        ModelCache::cache($model, 'foo', 'bar');
+        ModelCache::hasBeenCached($model, 'foo');
+        ModelCache::getCachedValue($model, 'foo');
+    }
 }
 ```
 
@@ -51,6 +76,18 @@ Video::first()->modelCached('currentTime');
 Video::first()->modelCached('randomSeed', $default); // with fallback
 ```
 
+To validate if a cached model instance value exists:
+
+```php
+$model = Video::findOrFail(10);
+
+if (! $model->hasModelCache('currentTime')) {
+    $model->modelCache('currentTime', 20);
+}
+
+return $model->modelCached('currentTime');
+```
+
 To forget a cached model value:
 
 ```php
@@ -60,7 +97,7 @@ Video::first()->modelCacheForget('randomSeed');
 
 ### Model caching (global)
 
-To set a model cache value based on its class:
+To put a model cache value based on its class:
 
 ```php
 Video::setModelCache('randomSeed', 0.1);
@@ -72,6 +109,12 @@ To retrieve a model class cached value:
 ```php
 Video::getModelCache('randomSeed');
 Video::getModelCache('randomSeed', $default);
+```
+
+To validate if a model class cached value exists:
+
+```php
+Video::hasModelCache('randomSeed');
 ```
 
 To forget a model class cached value:
