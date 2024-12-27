@@ -30,7 +30,7 @@ trait InteractsWithModelCache
         return ModelCache::getCachedValue($instance, $key) ?: $default;
     }
 
-    public static function forgetModelCache(string $key, ?Model $model = null): ModelCache
+    public static function forgetModelCache(string $key, ?Model $model = null): mixed
     {
         $instance = $model ?? static::class;
 
