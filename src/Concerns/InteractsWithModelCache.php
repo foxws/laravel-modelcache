@@ -37,7 +37,7 @@ trait InteractsWithModelCache
         return ModelCache::forget($instance, $key);
     }
 
-    public static function isModelCached(string $key, ?Model $model = null): bool
+    public static function hasModelCache(string $key, ?Model $model = null): bool
     {
         $instance = $model ?? static::class;
 
@@ -54,8 +54,13 @@ trait InteractsWithModelCache
         return static::getModelCache(model: $this, key: $key, default: $default);
     }
 
-    public function forgetModelCached(string $key): ModelCache
+    public function modelCacheForget(string $key): ModelCache
     {
         return static::forgetModelCache(model: $this, key: $key);
+    }
+
+    public function modelCacheHas(string $key): mixed
+    {
+        return static::hasModelCache(model: $this, key: $key);
     }
 }

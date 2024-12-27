@@ -53,6 +53,6 @@ it('can remove values using model concern', function () {
     $this->user->modelCacheForget('cacheKey');
     $this->post->modelCacheForget('cacheFoo');
 
-    assertFalse($this->user->isModelCached('cacheKey'));
-    assertFalse($this->post->isModelCached('cacheFoo'));
+    assertFalse($this->user->modelCacheHas('cacheKey'));
+    assertFalse($this->post->modelCacheHas('cacheFoo'));
 });
