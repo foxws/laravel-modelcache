@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This packages allows the Laravel Cache driver to be easily used for model instances. By default, logged in users will have their own separate cache.
+This package allows the Laravel Cache driver to be easily used for model instances. By default, logged in users will have their own separate cache-prefix.
 
 ## Installation
 
