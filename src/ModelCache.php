@@ -93,10 +93,10 @@ class ModelCache
             $model = app($model);
         }
 
-        if ($model instanceof Model && in_array(\Foxws\ModelCache\Concerns\InteractsWithModelCache::class, class_uses_recursive($model))) {
+        if ($model instanceof Model) {
             return $model;
         }
 
-        throw InvalidModelCache::doesNotUseConcern((string) $model);
+        throw InvalidModelCache::doesNotExtendModel((string) $model);
     }
 }
