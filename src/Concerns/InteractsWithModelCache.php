@@ -4,62 +4,63 @@ namespace Foxws\ModelCache\Concerns;
 
 use DateTime;
 use Foxws\ModelCache\Facades\ModelCache;
+use Illuminate\Database\Eloquent\Model;
 
 trait InteractsWithModelCache
 {
-    public static function modelClassCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
+    public static function setModelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null, ?Model $model = null): mixed
     {
-        if (! ModelCache::shouldCache(static::class, $key, $value)) {
+        $instance = $model ?? static::class;
+
+        if (! ModelCache::shouldCache($instance, $key, $value)) {
             return null;
         }
 
-        return ModelCache::cache(static::class, $key, $value, $ttl);
+        return ModelCache::cache($instance, $key, $value, $ttl);
     }
 
-    public static function modelClassCached(string $key, mixed $default = null): mixed
+    public static function getModelCache(string $key, mixed $default = null, ?Model $model = null): mixed
     {
-        if (! ModelCache::enabled() || ! static::isModelClassCached($key)) {
+        $instance = $model ?? static::class;
+
+        if (! ModelCache::enabled() || ! ModelCache::hasBeenCached($instance, $key)) {
             return $default;
         }
 
-        return ModelCache::getCachedValue(static::class, $key) ?? $default;
+        return ModelCache::getCachedValue($instance, $key) ?: $default;
     }
 
-    public static function modelClassCacheForget(string $key): void
+    public static function forgetModelCache(string $key, ?Model $model = null): mixed
     {
-        ModelCache::forget(static::class, $key);
+        $instance = $model ?? static::class;
+
+        return ModelCache::forget($instance, $key);
     }
 
-    public static function isModelClassCached(string $key): bool
+    public static function hasModelCache(string $key, ?Model $model = null): bool
     {
-        return ModelCache::hasBeenCached(static::class, $key);
+        $instance = $model ?? static::class;
+
+        return ModelCache::hasBeenCached($instance, $key);
     }
 
     public function modelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
     {
-        if (! ModelCache::shouldCache($this, $key, $value)) {
-            return null;
-        }
-
-        return ModelCache::cache($this, $key, $value, $ttl);
+        return static::setModelCache(model: $this, key: $key, value: $value, ttl: $ttl);
     }
 
     public function modelCached(string $key, mixed $default = null): mixed
     {
-        if (! ModelCache::enabled() || ! $this->isModelCached($key)) {
-            return $default;
-        }
-
-        return ModelCache::getCachedValue($this, $key) ?? $default;
+        return static::getModelCache(model: $this, key: $key, default: $default);
     }
 
-    public function isModelCached(string $key): bool
+    public function modelCacheForget(string $key): ModelCache
     {
-        return ModelCache::hasBeenCached($this, $key);
+        return static::forgetModelCache(model: $this, key: $key);
     }
 
-    public function modelCacheForget(string $key): void
+    public function modelCacheHas(string $key): mixed
     {
-        ModelCache::forget($this, $key);
+        return static::hasModelCache(model: $this, key: $key);
     }
 }

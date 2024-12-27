@@ -5,17 +5,17 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This package does not cache models, it gives you helpers to manage the Laravel Cache using a model instance. By default, logged in users will each have their own separate cache prefix.
+This package allows the Laravel Cache driver to be easily used for model instances. By default, logged in users will have their own separate cache-prefix.
 
 ## Installation
 
-You can install the package via composer:
+Install the package via composer:
 
 ```bash
 composer require foxws/laravel-modelcache
 ```
 
-You can publish the config file with:
+Publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="modelcache-config"
@@ -23,7 +23,7 @@ php artisan vendor:publish --tag="modelcache-config"
 
 ## Usage
 
-Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent models:
+Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent model:
 
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
@@ -35,16 +35,16 @@ class Video extends Model
 }
 ```
 
-### Model instances
+### Model instance
 
-To set a cache model value:
+To put a cache value for a model instance:
 
 ```php
 Video::first()->modelCache('currentTime', 20);
 Video::first()->modelCache('randomSeed', 20, now()->addDay()); // cache for one day
 ```
 
-To retrieve a cached model value:
+To retrieve a cached model instance value:
 
 ```php
 Video::first()->modelCached('currentTime');
@@ -58,31 +58,31 @@ Video::first()->modelCacheForget('currentTime');
 Video::first()->modelCacheForget('randomSeed');
 ```
 
-### Model class caching
+### Model caching (global)
 
-To set a model class cache value:
+To set a model cache value based on its class:
 
 ```php
-Video::modelClassCache('randomSeed', 0.1);
-Video::modelClassCache('randomSeed', 0.1, now()->addDay()); // cache for one day
+Video::setModelCache('randomSeed', 0.1);
+Video::setModelCache('randomSeed', 0.1, now()->addDay()); // cache for one day
 ```
 
 To retrieve a model class cached value:
 
 ```php
-Video::modelClassCached('randomSeed');
-Video::modelClassCached('randomSeed', $default);
+Video::getModelCache('randomSeed');
+Video::getModelCache('randomSeed', $default);
 ```
 
 To forget a model class cached value:
 
 ```php
-Video::modelClassCacheForget('randomSeed');
+Video::forgetModelCache('randomSeed');
 ```
 
 ### Creating a custom cache profile
 
-To determine which values should be cached, and for how long, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
+To determine which values should be cached, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
 
 You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
 
@@ -91,17 +91,21 @@ It is also possible to overrule the cache prefix using the model instance. For t
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Video extends Model
 {
     use InteractsWithModelCache;
 
-    /**
-     * @doc When using a overule, it doesn't create a separated cache by default for authenticated users.
-     */
     protected function cacheNameSuffix(string $key): string
     {
-        return "{$key}:my-modelcache-prefix";
+        // return Auth::check()
+        //     ? (string) Auth::id()
+        //     : '';
+
+        // return "{$key}:{$this->getMorphClass()}";
+
+        return ''; // do not use a separate cache for users
     }
 }
 ```

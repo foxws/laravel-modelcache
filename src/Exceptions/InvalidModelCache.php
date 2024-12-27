@@ -6,8 +6,8 @@ use Exception;
 
 class InvalidModelCache extends Exception
 {
-    public static function doesNotUseConcern(string $modelClass): static
+    public static function doesNotExtendModel(string $modelClass): static
     {
-        return new static("The provided `{$modelClass}` does not use the ModelCache trait.");
+        return new static("The provided `{$modelClass}` does not extend `Illuminate\Database\Eloquent\Model`.");
     }
 }

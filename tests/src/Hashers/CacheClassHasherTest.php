@@ -32,24 +32,24 @@ it('can generate a hash for a class', function () {
 });
 
 it('can store values using model concern', function () {
-    User::modelClassCache('cacheKey', 'cacheValue');
-    Post::modelClassCache('cacheFoo', 'cacheBar');
-    Post::modelClassCache('cacheBar', 'cacheFoo', now()->addDay());
+    User::setModelCache('cacheKey', 'cacheValue');
+    Post::setModelCache('cacheFoo', 'cacheBar');
+    Post::setModelCache('cacheBar', 'cacheFoo', now()->addDay());
 
-    assertEquals('cacheValue', User::modelClassCached('cacheKey'));
-    assertEquals('cacheBar', Post::modelClassCached('cacheFoo'));
+    assertEquals('cacheValue', User::getModelCache('cacheKey'));
+    assertEquals('cacheBar', Post::getModelCache('cacheFoo'));
 });
 
 it('can remove values using model concern', function () {
-    User::modelClassCache('cacheKey', 'cacheValue');
-    Post::modelClassCache('cacheFoo', 'cacheBar');
+    User::setModelCache('cacheKey', 'cacheValue');
+    Post::setModelCache('cacheFoo', 'cacheBar');
 
-    assertEquals('cacheValue', User::modelClassCached('cacheKey'));
-    assertEquals('cacheBar', Post::modelClassCached('cacheFoo'));
+    assertEquals('cacheValue', User::getModelCache('cacheKey'));
+    assertEquals('cacheBar', Post::getModelCache('cacheFoo'));
 
-    User::modelClassCacheForget('cacheKey');
-    Post::modelClassCacheForget('cacheFoo');
+    User::forgetModelCache('cacheKey');
+    Post::forgetModelCache('cacheFoo');
 
-    assertFalse(User::ismodelClassCached('cacheKey'));
-    assertFalse(Post::ismodelClassCached('cacheFoo'));
+    assertFalse(User::hasModelCache('cacheKey'));
+    assertFalse(Post::hasModelCache('cacheFoo'));
 });
