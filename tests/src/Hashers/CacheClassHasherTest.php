@@ -5,11 +5,12 @@ use Foxws\ModelCache\Hasher\DefaultHasher;
 use Foxws\ModelCache\Tests\Models\Post;
 use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;
+use Mockery\MockInterface;
 
 uses(TestCase::class);
 
 beforeEach(function () {
-    /** @var \Foxws\ModelCache\CacheProfiles\CacheProfile&\Mockery\MockInterface $cacheProfile */
+    /** @var CacheProfile&MockInterface $cacheProfile */
     $this->cacheProfile = Mockery::mock(CacheProfile::class);
 
     $this->cacheHasher = new DefaultHasher($this->cacheProfile);
