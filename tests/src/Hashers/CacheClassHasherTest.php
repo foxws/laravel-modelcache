@@ -9,6 +9,7 @@ use Foxws\ModelCache\Tests\TestCase;
 uses(TestCase::class);
 
 beforeEach(function () {
+    /** @var \Foxws\ModelCache\CacheProfiles\CacheProfile&\Mockery\MockInterface $cacheProfile */
     $this->cacheProfile = Mockery::mock(CacheProfile::class);
 
     $this->cacheHasher = new DefaultHasher($this->cacheProfile);

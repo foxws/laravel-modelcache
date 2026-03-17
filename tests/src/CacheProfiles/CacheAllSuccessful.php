@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 uses(TestCase::class);
 
 beforeEach(function () {
+    /** @var \Foxws\ModelCache\CacheProfiles\CacheAllSuccessful $cacheProfile */
     $this->cacheProfile = app(CacheAllSuccessful::class);
 });
 
