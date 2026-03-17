@@ -1,5 +1,9 @@
 <?php
 
+use Foxws\ModelCache\CacheProfiles\CacheAllSuccessful;
+use Foxws\ModelCache\Hasher\DefaultHasher;
+use Foxws\ModelCache\Serializers\DefaultSerializer;
+
 return [
     /*
      * Determine if the model cache should be enabled.
@@ -11,7 +15,7 @@ return [
      * You can provide your own classes given that it implements the
      * CacheProfile interface.
      */
-    'cache_profile' => \Foxws\ModelCache\CacheProfiles\CacheAllSuccessful::class,
+    'cache_profile' => CacheAllSuccessful::class,
 
     /*
      * This must be the name of any store that is configured in config/cache.php.
@@ -27,10 +31,10 @@ return [
      * This class is responsible for generating a hash for a request. This hash
      * is used to look up a cached response.
      */
-    'hasher' => \Foxws\ModelCache\Hasher\DefaultHasher::class,
+    'hasher' => DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer' => \Foxws\ModelCache\Serializers\DefaultSerializer::class,
+    'serializer' => DefaultSerializer::class,
 ];

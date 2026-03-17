@@ -1,10 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+
 beforeEach(function () {
     // Fake instances
-    \Illuminate\Support\Facades\Bus::fake();
-    \Illuminate\Support\Facades\Mail::fake();
-    \Illuminate\Support\Facades\Notification::fake();
-    \Illuminate\Support\Facades\Queue::fake();
-    \Illuminate\Support\Facades\Storage::fake();
+    Bus::fake();
+    Mail::fake();
+    Notification::fake();
+    Queue::fake();
+    Storage::fake();
 });
