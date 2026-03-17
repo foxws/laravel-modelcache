@@ -2,6 +2,17 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.2.0 - 2026-03-17
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/7
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/9
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/13
+* Bump stefanzweifel/git-auto-commit-action from 5 to 7 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/11
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.1.0...1.2.0
+
 ## 1.1.0 - 2025-04-23
 
 ### What's Changed
