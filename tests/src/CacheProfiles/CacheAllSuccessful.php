@@ -5,9 +5,6 @@ use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;
-
 uses(TestCase::class);
 
 beforeEach(function () {
@@ -15,16 +12,16 @@ beforeEach(function () {
 });
 
 it('will determine that values should be cached', function () {
-    assertTrue($this->cacheProfile->shouldCacheValue('testValue'));
-    assertTrue($this->cacheProfile->shouldCacheValue(10));
-    assertTrue($this->cacheProfile->shouldCacheValue(['testValue', 'foo', 'bar', 10]));
+    expect($this->cacheProfile->shouldCacheValue('testValue'))->toBeTrue();
+    expect($this->cacheProfile->shouldCacheValue(10))->toBeTrue();
+    expect($this->cacheProfile->shouldCacheValue(['testValue', 'foo', 'bar', 10]))->toBeTrue();
 });
 
 it('will use the id of the logged in user to differentiate caches', function () {
-    assertEquals('', $this->cacheProfile->useCacheNameSuffix('foo'));
+    expect($this->cacheProfile->useCacheNameSuffix('foo'))->toBe('');
 
     User::all()->map(function ($user) {
         Auth::loginUsingId(User::find($user->getKey()));
-        assertEquals($user->getKey(), $this->cacheProfile->useCacheNameSuffix('testValue'));
+        expect($this->cacheProfile->useCacheNameSuffix('testValue'))->toBe($user->getKey());
     });
 });

@@ -6,9 +6,6 @@ use Foxws\ModelCache\Tests\Models\Post;
 use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;
 
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertFalse;
-
 uses(TestCase::class);
 
 beforeEach(function () {
@@ -23,15 +20,11 @@ beforeEach(function () {
 it('can generate a hash for a cache', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
-    assertEquals(
-        'modelcache-7830f1c558a69446cbe74b50b6871528',
-        $this->cacheHasher->getHashFor($this->user, 'last_viewed')
-    );
+    expect($this->cacheHasher->getHashFor($this->user, 'last_viewed'))
+        ->toBe('modelcache-7830f1c558a69446cbe74b50b6871528');
 
-    assertEquals(
-        'modelcache-3f3822d73926df0c7a71519e9914ce3a',
-        $this->cacheHasher->getHashFor($this->post, 'last_viewed')
-    );
+    expect($this->cacheHasher->getHashFor($this->post, 'last_viewed'))
+        ->toBe('modelcache-3f3822d73926df0c7a71519e9914ce3a');
 });
 
 it('can store values using model concern', function () {
@@ -39,20 +32,20 @@ it('can store values using model concern', function () {
     $this->post->modelCache('cacheFoo', 'cacheBar');
     $this->post->modelCache('cacheBar', 'cacheFoo', now()->addDay());
 
-    assertEquals('cacheValue', $this->user->modelCached('cacheKey'));
-    assertEquals('cacheBar', $this->post->modelCached('cacheFoo'));
+    expect($this->user->modelCached('cacheKey'))->toBe('cacheValue');
+    expect($this->post->modelCached('cacheFoo'))->toBe('cacheBar');
 });
 
 it('can remove values using model concern', function () {
     $this->user->modelCache('cacheKey', 'cacheValue');
     $this->post->modelCache('cacheFoo', 'cacheBar');
 
-    assertEquals('cacheValue', $this->user->modelCached('cacheKey'));
-    assertEquals('cacheBar', $this->post->modelCached('cacheFoo'));
+    expect($this->user->modelCached('cacheKey'))->toBe('cacheValue');
+    expect($this->post->modelCached('cacheFoo'))->toBe('cacheBar');
 
     $this->user->modelCacheForget('cacheKey');
     $this->post->modelCacheForget('cacheFoo');
 
-    assertFalse($this->user->modelCacheHas('cacheKey'));
-    assertFalse($this->post->modelCacheHas('cacheFoo'));
+    expect($this->user->modelCacheHas('cacheKey'))->toBeFalse();
+    expect($this->post->modelCacheHas('cacheFoo'))->toBeFalse();
 });
