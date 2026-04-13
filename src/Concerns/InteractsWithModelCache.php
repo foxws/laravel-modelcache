@@ -14,6 +14,10 @@ trait InteractsWithModelCache
     {
         $instance = $model ?? static::class;
 
+        if ($instance instanceof static && ! $instance->shouldModelCache($key, $value)) {
+            return null;
+        }
+
         if (! ModelCache::shouldCache($instance, $key, $value)) {
             return null;
         }
@@ -64,5 +68,10 @@ trait InteractsWithModelCache
     public function modelCacheHas(string $key): mixed
     {
         return static::hasModelCache(model: $this, key: $key);
+    }
+
+    public function shouldModelCache(string $key, mixed $value = null): bool
+    {
+        return true;
     }
 }

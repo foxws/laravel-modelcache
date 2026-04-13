@@ -19,15 +19,12 @@ class DefaultHasher implements CacheHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($model, $key);
 
-        return 'modelcache-'.hash(
-            'xxh128',
-            implode(':', [$this->getNormalizedModel($model), $key, $cacheNameSuffix])
-        );
+        return 'modelcache-'.hash('xxh128', $this->getNormalizedModel($model).':'.$key.':'.$cacheNameSuffix);
     }
 
     protected function getNormalizedModel(Model $model): string
     {
-        return implode(':', [$model->getMorphClass(), $model->getKey()]);
+        return $model->getMorphClass().':'.$model->getKey();
     }
 
     protected function getCacheNameSuffix(Model $model, string $key): string

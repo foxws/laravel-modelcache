@@ -44,8 +44,6 @@ class DefaultSerializer implements Serializer
 
     protected function buildCacheValue(array $cacheProperties): mixed
     {
-        $type = $cacheProperties['type'] ?? static::CACHE_TYPE_NORMAL;
-
         return $cacheProperties['value'];
     }
 }
