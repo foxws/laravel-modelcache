@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Foxws\ModelCache;
 
 use ArrayAccess;
-use DateTime;
+use DateTimeInterface;
 use Foxws\ModelCache\CacheItemSelector\CacheItemSelector;
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
 use Foxws\ModelCache\Events\ClearedModelCache;
@@ -41,7 +41,7 @@ class ModelCache
         return $this->cacheProfile->shouldCacheValue($value);
     }
 
-    public function cache(Model|string $model, string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
+    public function cache(Model|string $model, string $key, mixed $value = null, DateTimeInterface|int|null $ttl = null): mixed
     {
         $model = $this->isModelCacheInstance($model);
 
