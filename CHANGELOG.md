@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.3.0 - 2026-04-13
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/15
+* Add strict types and update config access in multiple files by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/16
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.2.0...1.3.0
+
 ## 1.2.0 - 2026-03-17
 
 ### What's Changed
