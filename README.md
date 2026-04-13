@@ -5,27 +5,33 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/foxws/laravel-modelcache/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/foxws/laravel-modelcache/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/foxws/laravel-modelcache.svg?style=flat-square)](https://packagist.org/packages/foxws/laravel-modelcache)
 
-This package allows the Laravel Cache driver to be easily used for model instances. By default, logged in users will have their own separate cache-prefix.
+Attach arbitrary cached values to Eloquent model instances or classes using any Laravel cache driver. By default each authenticated user gets an isolated cache namespace, so two users never share the same cached value for the same model.
 
 ## Installation
 
-Install the package via composer:
+Install the package via Composer:
 
 ```bash
 composer require foxws/laravel-modelcache
 ```
 
-Publish the config file with:
+Optionally publish the config file:
 
 ```bash
 php artisan vendor:publish --tag="modelcache-config"
 ```
 
+### Environment variables
+
+| Variable               | Default           | Description                                            |
+| ---------------------- | ----------------- | ------------------------------------------------------ |
+| `MODEL_CACHE_ENABLED`  | `true`            | Toggle caching on/off globally                         |
+| `MODEL_CACHE_STORE`    | `CACHE_STORE`     | Cache store to use (any store from `config/cache.php`) |
+| `MODEL_CACHE_LIFETIME` | `604800` (1 week) | Default TTL in seconds                                 |
+
 ## Usage
 
-### Model Concern
-
-Implement the `Foxws\ModelCache\Concerns\InteractsWithModelCache` trait to your Eloquent model:
+### 1. Add the trait to your model
 
 ```php
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
@@ -37,118 +43,240 @@ class Video extends Model
 }
 ```
 
-### Facade
+That is all the setup required. Every public method below becomes available on the model.
 
-It is also possible to use the `ModelCache` Facade directly:
+---
+
+### 2. Instance cache
+
+These methods are scoped to a specific model record (e.g. `Video` with `id = 5`).
+
+**Store a value:**
 
 ```php
-use Foxws\ModelCache\Facades\ModelCache;
+$video = Video::findOrFail(5);
 
-class MyActionClass
+$video->modelCache('playback_position', 142);
+
+// With a custom TTL
+$video->modelCache('random_seed', 0.73, now()->addHours(6));
+$video->modelCache('last_viewed', now(), 3600); // TTL as seconds
+```
+
+**Retrieve a value:**
+
+```php
+$position = $video->modelCached('playback_position');        // null if not cached
+$seed     = $video->modelCached('random_seed', 0.5);         // 0.5 as fallback
+```
+
+**Check existence:**
+
+```php
+if (! $video->modelCacheHas('playback_position')) {
+    $video->modelCache('playback_position', 0);
+}
+```
+
+**Forget a value:**
+
+```php
+$video->modelCacheForget('playback_position');
+```
+
+**Practical example — lazy-load an expensive computed value:**
+
+```php
+class VideoController extends Controller
 {
-    public function handle(Video $model): void
+    public function show(Video $video): JsonResponse
     {
-        if (! ModelCache::enabled()) {
-            // modelcaching is disabled
-            return;
+        if (! $video->modelCacheHas('stats')) {
+            $stats = $this->computeExpensiveStats($video);
+            $video->modelCache('stats', $stats, now()->addDay());
         }
 
-        ModelCache::cache($model, 'foo', 'bar');
-        ModelCache::hasBeenCached($model, 'foo');
-        ModelCache::getCachedValue($model, 'foo');
+        return response()->json($video->modelCached('stats'));
     }
 }
 ```
 
-### Model instance
+---
 
-To put a cache value for a model instance:
+### 3. Class cache (global)
+
+These static methods are scoped to the model _class_ rather than a specific record. Useful for values shared across all instances, such as global seeds or configuration.
+
+**Store a value:**
 
 ```php
-Video::first()->modelCache('currentTime', 20);
-Video::first()->modelCache('randomSeed', 20, now()->addDay()); // cache for one day
+Video::setModelCache('random_seed', 0.42);
+Video::setModelCache('random_seed', 0.42, now()->addWeek());
 ```
 
-To retrieve a cached model instance value:
+**Retrieve a value:**
 
 ```php
-Video::first()->modelCached('currentTime');
-Video::first()->modelCached('randomSeed', $default); // with fallback
+$seed = Video::getModelCache('random_seed');          // null if not cached
+$seed = Video::getModelCache('random_seed', 0.5);     // with fallback
 ```
 
-To validate if a cached model instance value exists:
+**Check existence:**
 
 ```php
-$model = Video::findOrFail(10);
-
-if (! $model->hasModelCache('currentTime')) {
-    $model->modelCache('currentTime', 20);
+if (! Video::hasModelCache('random_seed')) {
+    Video::setModelCache('random_seed', rand() / getrandmax());
 }
-
-return $model->modelCached('currentTime');
 ```
 
-To forget a cached model value:
+**Forget a value:**
 
 ```php
-Video::first()->modelCacheForget('currentTime');
-Video::first()->modelCacheForget('randomSeed');
+Video::forgetModelCache('random_seed');
 ```
 
-### Model caching (global)
+---
 
-To put a model cache value based on its class:
+### 4. Facade
+
+Use the `ModelCache` facade when you need to interact with caching outside of a model — for example in an action class or a service.
 
 ```php
-Video::setModelCache('randomSeed', 0.1);
-Video::setModelCache('randomSeed', 0.1, now()->addDay()); // cache for one day
+use Foxws\ModelCache\Facades\ModelCache;
+
+class RecordPlaybackPosition
+{
+    public function handle(Video $video, int $seconds): void
+    {
+        if (! ModelCache::enabled()) {
+            return;
+        }
+
+        if (! ModelCache::shouldCache($video, 'playback_position', $seconds)) {
+            return;
+        }
+
+        ModelCache::cache($video, 'playback_position', $seconds, now()->addDay());
+    }
+}
 ```
 
-To retrieve a model class cached value:
-
 ```php
-Video::getModelCache('randomSeed');
-Video::getModelCache('randomSeed', $default);
+// Read from cache
+$position = ModelCache::getCachedValue($video, 'playback_position');
+
+// Check
+$exists = ModelCache::hasBeenCached($video, 'playback_position');
+
+// Forget one or multiple keys
+ModelCache::forget($video, 'playback_position');
+ModelCache::forget($video, ['playback_position', 'random_seed']);
 ```
 
-To validate if a model class cached value exists:
+---
+
+### 5. Controlling which values get cached (`shouldModelCache`)
+
+Override `shouldModelCache` on the model to conditionally skip caching certain keys or values:
 
 ```php
-Video::hasModelCache('randomSeed');
+class Video extends Model
+{
+    use InteractsWithModelCache;
+
+    public function shouldModelCache(string $key, mixed $value = null): bool
+    {
+        // Never cache a null value
+        if ($value === null) {
+            return false;
+        }
+
+        // Only cache specific keys
+        if (! in_array($key, ['playback_position', 'random_seed', 'stats'])) {
+            return false;
+        }
+
+        return true;
+    }
+}
 ```
 
-To forget a model class cached value:
+---
+
+### 6. Custom cache profile
+
+A cache profile controls global caching behaviour: whether caching is enabled, when values expire, and which per-user namespace suffix to use. The default is `CacheAllSuccessful`, which caches all values for all users.
+
+Create your own by implementing `CacheProfile`:
 
 ```php
-Video::forgetModelCache('randomSeed');
-```
-
-### Creating a custom cache profile
-
-To determine which values should be cached, a cache profile class is used. The default class that handles these questions is `Foxws\ModelCache\CacheProfiles\CacheAllSuccessful`.
-
-You can create your own cache profile class by implementing the  `Foxws\ModelCache\CacheProfile\CacheProfile`, and overruling the `cache_profile` in `config/modelcache.php`.
-
-It is also possible to overrule the cache prefix using the model instance. For this create a method named `cacheNameSuffix` on the model instance:
-
-```php
-use Foxws\ModelCache\Concerns\InteractsWithModelCache;
+use Foxws\ModelCache\CacheProfiles\BaseCacheProfile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
+class AuthenticatedUserCacheProfile extends BaseCacheProfile
+{
+    public function shouldUseCache(Model $model, string $key): bool
+    {
+        // Only cache for authenticated users
+        return Auth::check();
+    }
+
+    public function shouldCacheValue(mixed $value = null): bool
+    {
+        // Do not cache null or empty strings
+        return $value !== null && $value !== '';
+    }
+}
+```
+
+Register it in `config/modelcache.php`:
+
+```php
+'cache_profile' => AuthenticatedUserCacheProfile::class,
+```
+
+---
+
+### 7. Per-model cache namespace (`cacheNameSuffix`)
+
+By default, `BaseCacheProfile::useCacheNameSuffix` returns the authenticated user's ID, isolating each user's cache. You can override this per model:
+
+```php
 class Video extends Model
 {
     use InteractsWithModelCache;
 
     protected function cacheNameSuffix(string $key): string
     {
-        // return Auth::check()
-        //     ? (string) Auth::id()
-        //     : '';
+        // Shared cache regardless of who is logged in
+        return '';
+    }
+}
+```
 
-        // return "{$key}:{$this->getMorphClass()}";
+```php
+class Post extends Model
+{
+    use InteractsWithModelCache;
 
-        return ''; // do not use a separate cache for users
+    protected function cacheNameSuffix(string $key): string
+    {
+        // Separate cache per user
+        return Auth::check() ? (string) Auth::id() : '';
+    }
+}
+```
+
+```php
+class Report extends Model
+{
+    use InteractsWithModelCache;
+
+    protected function cacheNameSuffix(string $key): string
+    {
+        // Separate cache per key type, shared across users
+        return $key;
     }
 }
 ```
@@ -173,9 +301,9 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-This package is entirely based on the [space/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package.
+This package is entirely based on the [spatie/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package.
 
-Please consider to sponsor Spatie, such as purchasing their excellent courses. :)
+Please consider sponsoring Spatie, such as purchasing their excellent courses. :)
 
 ## License
 
