@@ -1,23 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\CacheProfiles;
 
-use DateTime;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 abstract class BaseCacheProfile implements CacheProfile
 {
     public function enabled(): bool
     {
-        return config('modelcache.enabled');
+        return Config::boolean('modelcache.enabled');
     }
 
-    public function cacheValueUntil(Model $model, string $key): DateTime
+    public function cacheValueUntil(Model $model, string $key): DateTimeInterface
     {
         return Carbon::now()->addSeconds(
-            config('modelcache.cache_lifetime_in_seconds')
+            Config::integer('modelcache.cache_lifetime_in_seconds')
         );
     }
 

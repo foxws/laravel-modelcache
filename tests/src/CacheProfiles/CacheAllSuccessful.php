@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Foxws\ModelCache\CacheProfiles\CacheAllSuccessful;
 use Foxws\ModelCache\Tests\Models\User;
 use Foxws\ModelCache\Tests\TestCase;

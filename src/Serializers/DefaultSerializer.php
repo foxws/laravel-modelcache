@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Serializers;
 
 use Foxws\ModelCache\Exceptions\CouldNotUnserialize;
@@ -42,8 +44,6 @@ class DefaultSerializer implements Serializer
 
     protected function buildCacheValue(array $cacheProperties): mixed
     {
-        $type = $cacheProperties['type'] ?? static::CACHE_TYPE_NORMAL;
-
         return $cacheProperties['value'];
     }
 }

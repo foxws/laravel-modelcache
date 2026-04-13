@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\CacheProfiles;
 
-use DateTime;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 interface CacheProfile
@@ -13,7 +15,7 @@ interface CacheProfile
 
     public function shouldCacheValue(mixed $value = null): bool;
 
-    public function cacheValueUntil(Model $model, string $key): DateTime;
+    public function cacheValueUntil(Model $model, string $key): DateTimeInterface;
 
     /*
      * Return a string to differentiate this request from others.

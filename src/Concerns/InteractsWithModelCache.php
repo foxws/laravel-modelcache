@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Concerns;
 
-use DateTime;
+use DateTimeInterface;
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Database\Eloquent\Model;
 
 trait InteractsWithModelCache
 {
-    public static function setModelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null, ?Model $model = null): mixed
+    public static function setModelCache(string $key, mixed $value = null, DateTimeInterface|int|null $ttl = null, ?Model $model = null): mixed
     {
         $instance = $model ?? static::class;
+
+        if ($instance instanceof static && ! $instance->shouldModelCache($key, $value)) {
+            return null;
+        }
 
         if (! ModelCache::shouldCache($instance, $key, $value)) {
             return null;
@@ -44,7 +50,7 @@ trait InteractsWithModelCache
         return ModelCache::hasBeenCached($instance, $key);
     }
 
-    public function modelCache(string $key, mixed $value = null, DateTime|int|null $ttl = null): mixed
+    public function modelCache(string $key, mixed $value = null, DateTimeInterface|int|null $ttl = null): mixed
     {
         return static::setModelCache(model: $this, key: $key, value: $value, ttl: $ttl);
     }
@@ -62,5 +68,10 @@ trait InteractsWithModelCache
     public function modelCacheHas(string $key): mixed
     {
         return static::hasModelCache(model: $this, key: $key);
+    }
+
+    public function shouldModelCache(string $key, mixed $value = null): bool
+    {
+        return true;
     }
 }

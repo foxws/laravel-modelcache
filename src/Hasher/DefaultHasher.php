@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Hasher;
 
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
@@ -17,15 +19,18 @@ class DefaultHasher implements CacheHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($model, $key);
 
-        return 'modelcache-'.hash(
-            'xxh128',
-            implode(':', [$this->getNormalizedModel($model), $key, $cacheNameSuffix])
-        );
+        $payload = json_encode([
+            $this->getNormalizedModel($model),
+            $key,
+            $cacheNameSuffix,
+        ], JSON_THROW_ON_ERROR);
+
+        return 'modelcache-'.hash('xxh128', $payload);
     }
 
     protected function getNormalizedModel(Model $model): string
     {
-        return implode(':', [$model->getMorphClass(), $model->getKey()]);
+        return $model->getMorphClass().':'.$model->getKey();
     }
 
     protected function getCacheNameSuffix(Model $model, string $key): string

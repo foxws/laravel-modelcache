@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -18,6 +20,6 @@ class ModelCache extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Foxws\ModelCache\ModelCache::class;
+        return 'modelcache';
     }
 }
