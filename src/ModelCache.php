@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache;
 
 use ArrayAccess;
@@ -11,6 +13,7 @@ use Foxws\ModelCache\Events\ClearingModelCache;
 use Foxws\ModelCache\Exceptions\InvalidModelCache;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class ModelCache
 {
@@ -55,7 +58,7 @@ class ModelCache
     {
         $model = $this->isModelCacheInstance($model);
 
-        return config('modelcache.enabled')
+        return Config::boolean('modelcache.enabled')
             ? $this->cache->has($this->hasher->getHashFor($model, $key))
             : false;
     }

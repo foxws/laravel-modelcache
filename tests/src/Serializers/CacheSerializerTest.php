@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Foxws\ModelCache\Serializers\DefaultSerializer;
 use Foxws\ModelCache\Tests\TestCase;
 

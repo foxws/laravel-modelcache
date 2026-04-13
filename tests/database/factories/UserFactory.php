@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Tests\Database\Factories;
 
 use Foxws\ModelCache\Tests\Models\User;

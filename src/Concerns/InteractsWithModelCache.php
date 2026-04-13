@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Foxws\ModelCache\Concerns;
 
 use DateTime;

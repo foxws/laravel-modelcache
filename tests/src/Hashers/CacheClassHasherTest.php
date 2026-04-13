@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
 use Foxws\ModelCache\Hasher\DefaultHasher;
 use Foxws\ModelCache\Tests\Models\Post;

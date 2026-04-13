@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Foxws\ModelCache\CacheProfiles\CacheAllSuccessful;
 use Foxws\ModelCache\Hasher\DefaultHasher;
 use Foxws\ModelCache\Serializers\DefaultSerializer;
@@ -8,7 +10,7 @@ return [
     /*
      * Determine if the model cache should be enabled.
      */
-    'enabled' => env('MODEL_CACHE_ENABLED', true),
+    'enabled' => (bool) env('MODEL_CACHE_ENABLED', true),
 
     /*
      * The given class will determinate if a value should be cached.
