@@ -19,7 +19,13 @@ class DefaultHasher implements CacheHasher
     {
         $cacheNameSuffix = $this->getCacheNameSuffix($model, $key);
 
-        return 'modelcache-'.hash('xxh128', $this->getNormalizedModel($model).':'.$key.':'.$cacheNameSuffix);
+        $payload = json_encode([
+            $this->getNormalizedModel($model),
+            $key,
+            $cacheNameSuffix,
+        ], JSON_THROW_ON_ERROR);
+
+        return 'modelcache-'.hash('xxh128', $payload);
     }
 
     protected function getNormalizedModel(Model $model): string
