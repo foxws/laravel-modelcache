@@ -301,9 +301,9 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-This package is entirely based on the [spatie/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package.
+This package is heavily inspired by and based on the [spatie/laravel-responsecache](https://github.com/spatie/laravel-responsecache/) package by [Spatie](https://spatie.be).
 
-Please consider sponsoring Spatie, such as purchasing their excellent courses. :)
+If you find their work valuable, please consider [sponsoring Spatie](https://spatie.be/open-source/support-us) or purchasing one of their [courses and products](https://spatie.be/products).
 
 ## License
 
