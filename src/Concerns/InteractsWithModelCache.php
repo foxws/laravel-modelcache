@@ -71,7 +71,7 @@ trait InteractsWithModelCache
         return static::hasModelCache(model: $this, key: $key);
     }
 
-    public function modelCacheRemember(string $key, Closure|mixed $value, DateTimeInterface|int|null $ttl = null): mixed
+    public function modelCacheRemember(string $key, mixed $value, DateTimeInterface|int|null $ttl = null): mixed
     {
         if ($this->modelCacheHas($key)) {
             return $this->modelCached($key);
