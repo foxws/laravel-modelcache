@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foxws\ModelCache\Concerns;
 
+use Closure;
 use DateTimeInterface;
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Database\Eloquent\Model;
@@ -68,6 +69,19 @@ trait InteractsWithModelCache
     public function modelCacheHas(string $key): mixed
     {
         return static::hasModelCache(model: $this, key: $key);
+    }
+
+    public function modelCacheRemember(string $key, Closure|mixed $value, DateTimeInterface|int|null $ttl = null): mixed
+    {
+        if ($this->modelCacheHas($key)) {
+            return $this->modelCached($key);
+        }
+
+        $resolved = $value instanceof Closure ? $value() : $value;
+
+        $this->modelCache($key, $resolved, $ttl);
+
+        return $resolved;
     }
 
     public function shouldModelCache(string $key, mixed $value = null): bool

@@ -84,6 +84,18 @@ if (! $video->modelCacheHas('playback_position')) {
 $video->modelCacheForget('playback_position');
 ```
 
+**Remember a value (fetch or store):**
+
+`modelCacheRemember` returns the cached value if it exists, otherwise resolves the closure (or uses the plain value), stores it, and returns it.
+
+```php
+// With a closure (recommended for expensive operations)
+$stats = $video->modelCacheRemember('stats', fn() => $this->computeExpensiveStats($video), now()->addDay());
+
+// With a plain value
+$video->modelCacheRemember('random_seed', 0.73, now()->addHours(6));
+```
+
 **Practical example — lazy-load an expensive computed value:**
 
 ```php
@@ -91,12 +103,9 @@ class VideoController extends Controller
 {
     public function show(Video $video): JsonResponse
     {
-        if (! $video->modelCacheHas('stats')) {
-            $stats = $this->computeExpensiveStats($video);
-            $video->modelCache('stats', $stats, now()->addDay());
-        }
+        $stats = $video->modelCacheRemember('stats', fn() => $this->computeExpensiveStats($video), now()->addDay());
 
-        return response()->json($video->modelCached('stats'));
+        return response()->json($stats);
     }
 }
 ```
