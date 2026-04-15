@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Foxws\ModelCache\Concerns;
 
-use Closure;
 use DateTimeInterface;
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Database\Eloquent\Model;
@@ -77,7 +76,7 @@ trait InteractsWithModelCache
             return $this->modelCached($key);
         }
 
-        $resolved = $value instanceof Closure ? $value() : $value;
+        $resolved = value($value);
 
         $this->modelCache($key, $resolved, $ttl);
 
