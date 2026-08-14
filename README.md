@@ -7,6 +7,8 @@
 
 Attach arbitrary cached values to Eloquent model instances or classes using any Laravel cache driver. By default each authenticated user gets an isolated cache namespace, so two users never share the same cached value for the same model.
 
+See the [full documentation](https://foxws.github.io/laravel-modelcache/) (or browse [`docs/`](docs) directly): [Installation](docs/installation.md), [Usage](docs/usage.md), [Facade](docs/facade.md), [Customization](docs/customization.md).
+
 ## Installation
 
 Install the package via Composer:
