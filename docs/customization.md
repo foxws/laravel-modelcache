@@ -1,13 +1,14 @@
 ---
-sidebar_position: 5
+section: Configuration
+order: 1
 ---
 
 # Customization
 
 ## Controlling which values get cached (`shouldModelCache`)
 
-Override `shouldModelCache` on the model to conditionally skip caching
-certain keys or values:
+Override `shouldModelCache` on the model to skip caching for certain
+keys or values:
 
 ```php
 class Video extends Model
@@ -33,10 +34,9 @@ class Video extends Model
 
 ## Custom cache profile
 
-A cache profile controls global caching behaviour: whether caching is
-enabled, when values expire, and which per-user namespace suffix to use.
-The default is `CacheAllSuccessful`, which caches all values for all
-users.
+A cache profile controls caching behavior overall: whether it's
+enabled, when values expire, and what namespace suffix separates users.
+The default, `CacheAllSuccessful`, caches every value for every user.
 
 Create your own by implementing `CacheProfile`:
 
@@ -69,9 +69,9 @@ Register it in `config/modelcache.php`:
 
 ## Per-model cache namespace (`cacheNameSuffix`)
 
-By default, `BaseCacheProfile::useCacheNameSuffix` returns the
-authenticated user's ID, isolating each user's cache. You can override
-this per model:
+By default, `BaseCacheProfile::useCacheNameSuffix` returns the logged-in
+user's ID, which keeps each user's cache separate. You can override this
+per model:
 
 ```php
 class Video extends Model

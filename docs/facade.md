@@ -1,10 +1,11 @@
 ---
-sidebar_position: 4
+section: Usage
+order: 2
 ---
 
 # Facade
 
-Use the `ModelCache` facade when you need to interact with caching outside
+Use the `ModelCache` facade when you want to work with the cache outside
 of a model — for example in an action class or a service.
 
 ```php
