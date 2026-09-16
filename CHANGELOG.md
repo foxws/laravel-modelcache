@@ -2,6 +2,23 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.4.2 - 2026-09-16
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/17
+* Add Docusaurus documentation site by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/19
+* Bump actions/checkout from 4 to 7 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/18
+* Bump pnpm/action-setup from 4 to 6 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/23
+* Bump actions/upload-pages-artifact from 3 to 5 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/22
+* Bump actions/deploy-pages from 4 to 5 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/21
+* Bump actions/setup-node from 4 to 7 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/20
+* Bump actions/checkout from 4 to 7 by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/24
+* Bump react from 19.2.8 to 19.3.0 in /website by @dependabot[bot] in https://github.com/foxws/laravel-modelcache/pull/25
+* Migrate docs to laravel-docs format and remove old Docusaurus site by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/26
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.4.1...1.4.2
+
 ## 1.4.1 - 2026-04-15
 
 **Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.4.0...1.4.1
