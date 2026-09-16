@@ -1,5 +1,6 @@
 ---
-sidebar_position: 3
+section: Usage
+order: 1
 ---
 
 # Usage
@@ -16,13 +17,13 @@ class Video extends Model
 }
 ```
 
-That is all the setup required. Every method below becomes available on
+That's all the setup you need — every method below is now available on
 the model.
 
 ## Instance cache
 
-These methods are scoped to a specific model record (e.g. `Video` with
-`id = 5`).
+These methods target one specific record, e.g. a `Video` with
+`id = 5`.
 
 **Store a value:**
 
@@ -59,8 +60,9 @@ $video->modelCacheForget('playback_position');
 
 **Remember a value (fetch or store):**
 
-`modelCacheRemember` returns the cached value if it exists, otherwise
-resolves the closure (or uses the plain value), stores it, and returns it.
+`modelCacheRemember` returns the cached value if there is one. Otherwise
+it resolves the closure (or uses the plain value you pass), stores the
+result, and returns it.
 
 ```php
 // With a closure (recommended for expensive operations)
@@ -86,9 +88,9 @@ class VideoController extends Controller
 
 ## Class cache (global)
 
-These static methods are scoped to the model _class_ rather than a
-specific record. Useful for values shared across all instances, such as
-global seeds or configuration.
+These static methods target the model _class_ rather than one record.
+Use them for values shared across every instance, such as a global seed
+or a piece of configuration.
 
 **Store a value:**
 
