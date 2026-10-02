@@ -10,9 +10,9 @@ metadata:
   laravel: "12.x / 13.x"
   licence: MIT
   used_by:
-    name: Stry
-    desc: "A self-hosted video streaming app."
-    href: "https://github.com/francoism90/stry"
+    - name: Stry
+      desc: "A self-hosted video streaming app."
+      href: "https://github.com/francoism90/stry"
 ---
 
 # Introduction
