@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.4.3 - 2026-10-02
+
+### What's Changed
+
+* docs: add the foxws.nl homepage group, a hero lead and a clearer introduction by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/27
+* Raise PHPStan to level 8, and forget a collection of keys by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/28
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.4.2...1.4.3
+
 ## 1.4.2 - 2026-09-16
 
 ### What's Changed
