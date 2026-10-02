@@ -26,6 +26,9 @@ class DefaultSerializer implements Serializer
         return $this->buildCacheValue($cacheProperties);
     }
 
+    /**
+     * @return array{value: mixed, type: string}
+     */
     protected function getCacheData(mixed $value = null): array
     {
         $type = static::CACHE_TYPE_NORMAL;
@@ -42,6 +45,9 @@ class DefaultSerializer implements Serializer
         return isset($properties['value']);
     }
 
+    /**
+     * @param  array<string, mixed>  $cacheProperties
+     */
     protected function buildCacheValue(array $cacheProperties): mixed
     {
         return $cacheProperties['value'];

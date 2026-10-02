@@ -8,13 +8,15 @@ use ArrayAccess;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Foxws\ModelCache\ModelCacheRepository;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use LogicException;
+use Traversable;
 
 class CacheItemSelector extends AbstractCacheBuilder
 {
     protected ?Model $model = null;
 
-    protected ?array $keys = null;
+    /** @var array<int, string> */
+    protected array $keys = [];
 
     public function __construct(
         protected CacheHasher $hasher,
@@ -28,21 +30,27 @@ class CacheItemSelector extends AbstractCacheBuilder
         return $this;
     }
 
+    /**
+     * @param  array<int, string>|(ArrayAccess<int, string>&Traversable<int, string>)|string|null  $keys  One key, or several, e.g. an array or a collection.
+     */
     public function forKeys(ArrayAccess|array|string|null $keys = null): static
     {
-        $this->keys = Arr::wrap($keys);
+        $this->keys = match (true) {
+            is_array($keys) => array_values($keys),
+            $keys instanceof Traversable => iterator_to_array($keys, false),
+            is_string($keys) => [$keys],
+            default => [],
+        };
 
         return $this;
     }
 
     public function forget(): void
     {
-        collect($this->keys)
-            ->map(function ($key) {
-                $key = $this->build($key);
+        $model = $this->model ?? throw new LogicException('Call forModel() before forget().');
 
-                return $this->hasher->getHashFor($this->model, $key);
-            })
+        collect($this->keys)
+            ->map(fn (string $key): string => $this->hasher->getHashFor($model, $this->build($key)))
             ->filter(fn ($hash) => $this->cache->has($hash))
             ->each(fn ($hash) => $this->cache->forget($hash));
     }

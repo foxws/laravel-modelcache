@@ -22,7 +22,7 @@ class ModelCacheServiceProvider extends PackageServiceProvider
             ->hasConfigFile('modelcache');
     }
 
-    public function packageBooted()
+    public function packageBooted(): void
     {
         $this->app->bind(CacheProfile::class, function (Container $app) {
             return $app->make(Config::string('modelcache.cache_profile'));

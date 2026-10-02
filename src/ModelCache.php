@@ -70,6 +70,9 @@ class ModelCache
         return $this->cache->get($this->hasher->getHashFor($model, $key));
     }
 
+    /**
+     * @param  array<int, string>|(ArrayAccess<int, string>&\Traversable<int, string>)|string  $keys  One key, or several, e.g. an array or a collection.
+     */
     public function forget(Model|string $model, array|ArrayAccess|string $keys): self
     {
         $model = $this->isModelCacheInstance($model);
