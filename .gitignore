@@ -20,6 +20,7 @@ _ide_helper.php
 composer.lock
 /auth.json
 /bootstrap/ssr
+/build
 /dist
 /node_modules
 /public/build
