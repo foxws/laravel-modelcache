@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.5.0 - 2026-10-14
+
+### What's Changed
+
+* Add Laravel Boost skill and tip by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/29
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.4.3...1.5.0
+
 ## 1.4.3 - 2026-10-02
 
 ### What's Changed
