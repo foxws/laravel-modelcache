@@ -31,6 +31,16 @@ php artisan vendor:publish --tag="modelcache-config"
 | `MODEL_CACHE_STORE`    | `CACHE_STORE`     | Cache store to use (any store from `config/cache.php`) |
 | `MODEL_CACHE_LIFETIME` | `604800` (1 week) | Default TTL in seconds                                 |
 
+> [!TIP]
+> Let your AI agent do the hard parts. This package ships a [Laravel Boost](https://laravel.com/docs/boost) skill, `modelcache-development`, that teaches your agent how to install, configure and use Laravel Model Cache. Install Boost and select the skill when prompted:
+>
+> ```bash
+> composer require laravel/boost --dev
+> php artisan boost:install
+> ```
+>
+> Already using Boost? Run `php artisan boost:update --discover` to pick up the skill. Then just ask, for example: *"Remember each user's playback position on my Video model."*
+
 ## Usage
 
 ### 1. Add the trait to your model
