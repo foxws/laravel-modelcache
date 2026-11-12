@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 1.6.0 - 2026-11-12
+
+### What's Changed
+
+* Return cached falsy and null values, and dispatch the hit and miss events by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/30
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.5.0...1.6.0
+
 ## 1.5.0 - 2026-10-14
 
 ### What's Changed
