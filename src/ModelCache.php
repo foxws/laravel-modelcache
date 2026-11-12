@@ -13,7 +13,6 @@ use Foxws\ModelCache\Events\ClearingModelCache;
 use Foxws\ModelCache\Exceptions\InvalidModelCache;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 class ModelCache
 {
@@ -58,16 +57,15 @@ class ModelCache
     {
         $model = $this->isModelCacheInstance($model);
 
-        return Config::boolean('modelcache.enabled')
-            ? $this->cache->has($this->hasher->getHashFor($model, $key))
-            : false;
+        return $this->enabled()
+            && $this->cache->has($this->hasher->getHashFor($model, $key));
     }
 
-    public function getCachedValue(Model|string $model, string $key): mixed
+    public function getCachedValue(Model|string $model, string $key, mixed $default = null): mixed
     {
         $model = $this->isModelCacheInstance($model);
 
-        return $this->cache->get($this->hasher->getHashFor($model, $key));
+        return $this->cache->get($this->hasher->getHashFor($model, $key), $default);
     }
 
     /**

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Foxws\ModelCache\Concerns;
 
 use DateTimeInterface;
+use Foxws\ModelCache\Events\CacheMissed;
+use Foxws\ModelCache\Events\ModelCacheHit;
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,11 +31,19 @@ trait InteractsWithModelCache
     {
         $instance = $model ?? static::class;
 
-        if (! ModelCache::enabled() || ! ModelCache::hasBeenCached($instance, $key)) {
+        if (! ModelCache::enabled()) {
             return $default;
         }
 
-        return ModelCache::getCachedValue($instance, $key) ?: $default;
+        if (! ModelCache::hasBeenCached($instance, $key)) {
+            event(new CacheMissed(ModelCache::isModelCacheInstance($instance), $key));
+
+            return $default;
+        }
+
+        event(new ModelCacheHit(ModelCache::isModelCacheInstance($instance), $key));
+
+        return ModelCache::getCachedValue($instance, $key, $default);
     }
 
     public static function forgetModelCache(string $key, ?Model $model = null): mixed
