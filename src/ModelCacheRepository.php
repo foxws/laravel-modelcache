@@ -27,9 +27,18 @@ class ModelCacheRepository
         return $this->cache->has($key);
     }
 
-    public function get(string $key): mixed
+    /**
+     * The cached value, or the default when the key is not in the store (e.g. it expired after has() was checked).
+     */
+    public function get(string $key, mixed $default = null): mixed
     {
-        return $this->serializer->unserialize($this->cache->get($key) ?? '');
+        $serializedValue = $this->cache->get($key);
+
+        if (! is_string($serializedValue)) {
+            return $default;
+        }
+
+        return $this->serializer->unserialize($serializedValue);
     }
 
     public function clear(): void

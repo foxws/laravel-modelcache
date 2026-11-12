@@ -42,7 +42,7 @@ class DefaultSerializer implements Serializer
             return false;
         }
 
-        return isset($properties['value']);
+        return array_key_exists('value', $properties);
     }
 
     /**
