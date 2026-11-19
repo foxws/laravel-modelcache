@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 2.0.0 - 2026-11-19
+
+This release requires PHP 8.5 or newer and Laravel 13. PHP 8.4 and Laravel 12 are no longer supported, and PHP 8.6 is now tested in CI. Stay on the previous major version if you still run PHP 8.4 or Laravel 12.
+
+### What's Changed
+
+* Drop PHP 8.4 and add PHP 8.6 by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/31
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/1.6.0...2.0.0
+
 ## 1.6.0 - 2026-11-12
 
 ### What's Changed
