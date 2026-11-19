@@ -6,7 +6,7 @@ metadata:
   eyebrow: "Eloquent · Model Caching · Per-user Isolation"
   desc: "Attach cached values to Eloquent models, with each user's data kept in its own namespace."
   requires: "PHP ^8.5"
-  laravel: "12.x / 13.x"
+  laravel: "13.x"
   licence: MIT
 ---
 
