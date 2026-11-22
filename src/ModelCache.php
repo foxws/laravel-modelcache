@@ -31,9 +31,9 @@ class ModelCache
 
     public function shouldCache(Model|string $model, string $key, mixed $value = null): bool
     {
-        $model = $this->isModelCacheInstance($model);
+        $model = $this->resolveModel($model);
 
-        if (! $this->cacheProfile->shouldUseCache($model, $key)) {
+        if (! $this->enabled() || ! $this->cacheProfile->shouldUseCache($model, $key)) {
             return false;
         }
 
@@ -42,7 +42,7 @@ class ModelCache
 
     public function cache(Model|string $model, string $key, mixed $value = null, DateTimeInterface|int|null $ttl = null): mixed
     {
-        $model = $this->isModelCacheInstance($model);
+        $model = $this->resolveModel($model);
 
         $ttl ??= $this->cacheProfile->cacheValueUntil($model, $key);
 
@@ -55,7 +55,7 @@ class ModelCache
 
     public function hasBeenCached(Model|string $model, string $key): bool
     {
-        $model = $this->isModelCacheInstance($model);
+        $model = $this->resolveModel($model);
 
         return $this->enabled()
             && $this->cache->has($this->hasher->getHashFor($model, $key));
@@ -63,7 +63,7 @@ class ModelCache
 
     public function getCachedValue(Model|string $model, string $key, mixed $default = null): mixed
     {
-        $model = $this->isModelCacheInstance($model);
+        $model = $this->resolveModel($model);
 
         return $this->cache->get($this->hasher->getHashFor($model, $key), $default);
     }
@@ -73,11 +73,11 @@ class ModelCache
      */
     public function forget(Model|string $model, array|ArrayAccess|string $keys): self
     {
-        $model = $this->isModelCacheInstance($model);
+        $items = $this->selectCachedItems($model);
 
         event(new ClearingModelCache);
 
-        $this->selectCachedItems($model)->forKeys($keys)->forget();
+        $items->forKeys($keys)->forget();
 
         event(new ClearedModelCache);
 
@@ -86,21 +86,37 @@ class ModelCache
 
     public function selectCachedItems(Model|string $model): CacheItemSelector
     {
-        $model = $this->isModelCacheInstance($model);
+        $model = $this->resolveModel($model);
 
         return (new CacheItemSelector($this->hasher, $this->cache))->forModel($model);
     }
 
     public function isModelCacheInstance(Model|string $model): Model
     {
-        if (is_string($model)) {
-            $model = app($model);
-        }
-
         if ($model instanceof Model) {
             return $model;
         }
 
-        throw InvalidModelCache::doesNotExtendModel((string) $model);
+        // Checked first, as resolving runs the constructor of whatever class it's given.
+        if (! is_a($model, Model::class, true)) {
+            throw InvalidModelCache::doesNotExtendModel($model);
+        }
+
+        return app($model);
+    }
+
+    /**
+     * The model to cache for: a class stands for all of its records, and an instance for its own one.
+     * Without a key, e.g. unsaved or selected without it, an instance would get the cache of the class.
+     *
+     * @throws InvalidModelCache
+     */
+    protected function resolveModel(Model|string $model): Model
+    {
+        if ($model instanceof Model && in_array($model->getKey(), [null, ''], true)) {
+            throw InvalidModelCache::hasNoKey($model);
+        }
+
+        return $this->isModelCacheInstance($model);
     }
 }
