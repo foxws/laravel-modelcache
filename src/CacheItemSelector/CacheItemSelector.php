@@ -50,7 +50,7 @@ class CacheItemSelector extends AbstractCacheBuilder
         $model = $this->model ?? throw new LogicException('Call forModel() before forget().');
 
         collect($this->keys)
-            ->map(fn (string $key): string => $this->hasher->getHashFor($model, $this->build($key)))
+            ->map(fn (string $key): string => $this->hasher->getHashFor($model, $key, $this->cacheNameSuffix))
             ->filter(fn ($hash) => $this->cache->has($hash))
             ->each(fn ($hash) => $this->cache->forget($hash));
     }

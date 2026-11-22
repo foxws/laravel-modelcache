@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool hasBeenCached(\Illuminate\Database\Eloquent\Model|string $model, string $key)
  * @method static mixed getCachedValue(\Illuminate\Database\Eloquent\Model|string $model, string $key, mixed $default = null)
  * @method static \Illuminate\Database\Eloquent\Model isModelCacheInstance(\Illuminate\Database\Eloquent\Model|string $model)
+ * @method static \Foxws\ModelCache\CacheItemSelector\CacheItemSelector selectCachedItems(\Illuminate\Database\Eloquent\Model|string $model)
  * @method static \Foxws\ModelCache\ModelCache forget(\Illuminate\Database\Eloquent\Model|string $model, array<int, string>|\Illuminate\Support\Collection<int, string>|string $keys)
  */
 class ModelCache extends Facade
