@@ -36,6 +36,13 @@ return [
     'hasher' => DefaultHasher::class,
 
     /*
+     * The classes cached values may be unserialized into: false for none, an
+     * array of class names, or true for any, which lets whoever can write to the
+     * cache store create any object. Null follows cache.serializable_classes.
+     */
+    'serializable_classes' => null,
+
+    /*
      * This class is responsible for serializing responses.
      */
     'serializer' => DefaultSerializer::class,

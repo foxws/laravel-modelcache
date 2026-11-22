@@ -9,6 +9,7 @@ use Foxws\ModelCache\Events\CacheMissed;
 use Foxws\ModelCache\Events\ModelCacheHit;
 use Foxws\ModelCache\Facades\ModelCache;
 use Illuminate\Database\Eloquent\Model;
+use stdClass;
 
 trait InteractsWithModelCache
 {
@@ -35,7 +36,11 @@ trait InteractsWithModelCache
             return $default;
         }
 
-        if (! ModelCache::hasBeenCached($instance, $key)) {
+        // Read once: a key can exist while its value has expired since, or can't be read.
+        $missing = new stdClass;
+        $value = ModelCache::getCachedValue($instance, $key, $missing);
+
+        if ($value === $missing) {
             event(new CacheMissed(ModelCache::isModelCacheInstance($instance), $key));
 
             return $default;
@@ -43,7 +48,7 @@ trait InteractsWithModelCache
 
         event(new ModelCacheHit(ModelCache::isModelCacheInstance($instance), $key));
 
-        return ModelCache::getCachedValue($instance, $key, $default);
+        return $value;
     }
 
     public static function forgetModelCache(string $key, ?Model $model = null): mixed
@@ -82,8 +87,11 @@ trait InteractsWithModelCache
 
     public function modelCacheRemember(string $key, mixed $value, DateTimeInterface|int|null $ttl = null): mixed
     {
-        if ($this->modelCacheHas($key)) {
-            return $this->modelCached($key);
+        $missing = new stdClass;
+        $cached = $this->modelCached($key, $missing);
+
+        if ($cached !== $missing) {
+            return $cached;
         }
 
         $resolved = value($value);

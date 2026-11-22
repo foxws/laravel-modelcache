@@ -78,6 +78,7 @@ ModelCache::forget($video, ['playback_position', 'random_seed']);
 
 ## Rules
 
+- Cache scalars and arrays. Objects (dates, enums) only come back when their class is in `modelcache.serializable_classes`, which follows `cache.serializable_classes` when null (`false` in new applications).
 - Use this for small per-model values; don't use it as a query cache or to store whole models or collections.
 - Remember the per-user default: a value cached in a request for user A isn't visible to user B, a guest, or a queued job. Override `cacheNameSuffix()` to `''` for values that must be shared.
 - Pick a cache store that persists (Redis, database) when values must survive a deploy; `MODEL_CACHE_ENABLED=false` turns everything off.

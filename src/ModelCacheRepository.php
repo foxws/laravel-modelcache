@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Foxws\ModelCache;
 
 use DateTimeInterface;
+use Foxws\ModelCache\Exceptions\CouldNotUnserialize;
 use Foxws\ModelCache\Serializers\Serializer;
 use Illuminate\Cache\Repository;
 
@@ -28,7 +29,8 @@ class ModelCacheRepository
     }
 
     /**
-     * The cached value, or the default when the key is not in the store (e.g. it expired after has() was checked).
+     * The cached value, or the default when the key is not in the store (e.g. it expired after has() was checked)
+     * or can't be unserialized.
      */
     public function get(string $key, mixed $default = null): mixed
     {
@@ -38,7 +40,11 @@ class ModelCacheRepository
             return $default;
         }
 
-        return $this->serializer->unserialize($serializedValue);
+        try {
+            return $this->serializer->unserialize($serializedValue);
+        } catch (CouldNotUnserialize) {
+            return $default;
+        }
     }
 
     public function clear(): void
