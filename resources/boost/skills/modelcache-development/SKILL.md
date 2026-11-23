@@ -80,6 +80,7 @@ ModelCache::forget($video, ['playback_position', 'random_seed']);
 
 ## Rules
 
+- Cache scalars, arrays, dates and enums. Other objects come back as `__PHP_Incomplete_Class` unless their class is added to `modelcache.serializable_classes`, which defaults to the Carbon and DateTime classes. Never add models, collections, `CarbonPeriod` or `CarbonInterval`: unserializing those from a writable cache store could run code.
 - Use this for small per-model values; don't use it as a query cache or to store whole models or collections.
 - Remember the per-user default: a value cached in a request for user A isn't visible to user B, a guest, or a queued job. Override `cacheNameSuffix()` to `''` for values that must be shared.
 - Pick a cache store that persists (Redis, database) when values must survive a deploy; `MODEL_CACHE_ENABLED=false` turns everything off.

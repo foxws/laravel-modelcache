@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Foxws\ModelCache\CacheProfiles\CacheAllSuccessful;
 use Foxws\ModelCache\Hasher\DefaultHasher;
 use Foxws\ModelCache\Serializers\DefaultSerializer;
+use Illuminate\Support\Carbon as SupportCarbon;
 
 return [
     /*
@@ -34,6 +37,24 @@ return [
      * is used to look up a cached response.
      */
     'hasher' => DefaultHasher::class,
+
+    /*
+     * The classes cached values may be unserialized into: an array of class
+     * names, false for none, or true for any, which lets whoever can write to
+     * the cache store create any object. Null follows cache.serializable_classes,
+     * and allows none when that isn't set. Enums don't need to be listed.
+     *
+     * The dates below restore only their date and timezone, so they're safe to
+     * allow. Don't add classes that hold callables or other objects, such as
+     * models, collections, CarbonPeriod or CarbonInterval.
+     */
+    'serializable_classes' => [
+        Carbon::class,
+        CarbonImmutable::class,
+        SupportCarbon::class,
+        DateTime::class,
+        DateTimeImmutable::class,
+    ],
 
     /*
      * This class is responsible for serializing responses.
