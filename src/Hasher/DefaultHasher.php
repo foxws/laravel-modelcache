@@ -6,6 +6,7 @@ namespace Foxws\ModelCache\Hasher;
 
 use Foxws\ModelCache\CacheProfiles\CacheProfile;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionMethod;
 
 class DefaultHasher implements CacheHasher
 {
@@ -15,9 +16,9 @@ class DefaultHasher implements CacheHasher
         //
     }
 
-    public function getHashFor(Model $model, string $key): string
+    public function getHashFor(Model $model, string $key, ?string $suffix = null): string
     {
-        $cacheNameSuffix = $this->getCacheNameSuffix($model, $key);
+        $cacheNameSuffix = $suffix ?? $this->getCacheNameSuffix($model, $key);
 
         $payload = json_encode([
             $this->getNormalizedModel($model),
@@ -25,18 +26,34 @@ class DefaultHasher implements CacheHasher
             $cacheNameSuffix,
         ], JSON_THROW_ON_ERROR);
 
-        return 'modelcache-'.hash('xxh128', $payload);
+        // Not a fast hash: keys can hold user input, which mustn't be able to collide with other keys.
+        return 'modelcache-'.hash('sha256', $payload);
     }
 
-    protected function getNormalizedModel(Model $model): string
+    /**
+     * Records of different connections, databases or tables can have the same class and key.
+     *
+     * @return array<int, string>
+     */
+    protected function getNormalizedModel(Model $model): array
     {
-        return $model->getMorphClass().':'.$model->getKey();
+        $connection = $model->getConnection();
+
+        return [
+            (string) $connection->getName(),
+            $connection->getDatabaseName(),
+            $connection->getTablePrefix(),
+            $model->getTable(),
+            $model->getMorphClass(),
+            (string) $model->getKey(),
+        ];
     }
 
     protected function getCacheNameSuffix(Model $model, string $key): string
     {
         if (method_exists($model, 'cacheNameSuffix')) {
-            return $model->cacheNameSuffix($key);
+            // Through reflection, as models declare it protected and would forward the call to a query.
+            return (string) new ReflectionMethod($model, 'cacheNameSuffix')->invoke($model, $key);
         }
 
         return $this->cacheProfile->useCacheNameSuffix($model, $key);

@@ -69,9 +69,11 @@ Register it in `config/modelcache.php`:
 
 ## Per-model cache namespace (`cacheNameSuffix`)
 
-By default, `BaseCacheProfile::useCacheNameSuffix` returns the logged-in
-user's ID, which keeps each user's cache separate. You can override this
-per model:
+By default, `BaseCacheProfile::useCacheNameSuffix` returns a namespace of
+the logged-in user, which keeps each user's cache separate: the user's
+class, database and ID. Admins and users with the same ID don't share
+one, and one user signed in through several guards does. You can
+override this per model:
 
 ```php
 class Video extends Model
@@ -87,6 +89,8 @@ class Video extends Model
 ```
 
 ```php
+use Foxws\ModelCache\CacheProfiles\BaseCacheProfile;
+
 class Post extends Model
 {
     use InteractsWithModelCache;
@@ -94,7 +98,9 @@ class Post extends Model
     protected function cacheNameSuffix(string $key): string
     {
         // Separate cache per user
-        return Auth::check() ? (string) Auth::id() : '';
+        $user = Auth::user();
+
+        return $user !== null ? BaseCacheProfile::suffixFor($user) : '';
     }
 }
 ```

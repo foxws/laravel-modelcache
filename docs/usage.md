@@ -23,7 +23,8 @@ the model.
 ## Instance cache
 
 These methods target one specific record, e.g. a `Video` with
-`id = 5`.
+`id = 5`. The instance needs its key: one that's unsaved, or selected
+without it, throws `InvalidModelCache`.
 
 **Store a value:**
 

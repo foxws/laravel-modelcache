@@ -25,10 +25,10 @@ it('can generate a hash for a cache', function () {
     $this->cacheProfile->shouldReceive('useCacheNameSuffix')->andReturn('cacheProfileSuffix');
 
     expect($this->cacheHasher->getHashFor($this->user, 'last_viewed'))
-        ->toBe('modelcache-cdcf01a752621af0e77e5494863945ea');
+        ->toBe('modelcache-f63713f6385cd7c96ecff45964c7adfed05e6006b9cd76da01b967a0a7e34e3d');
 
     expect($this->cacheHasher->getHashFor($this->post, 'last_viewed'))
-        ->toBe('modelcache-bfc63607896ed70d8e5ca4e166dd0e42');
+        ->toBe('modelcache-f74135db7776e3473ef558dba0909e9ebb5bd690255f91fca6e5205a12c4b9b0');
 });
 
 it('can store values using model concern', function () {

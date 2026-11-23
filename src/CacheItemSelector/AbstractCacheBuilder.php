@@ -8,19 +8,14 @@ abstract class AbstractCacheBuilder
 {
     protected ?string $cacheNameSuffix = null;
 
-    public function usingSuffix(?string $cacheNameSuffix = null): self
+    /**
+     * Select the items in this namespace instead of the current one, e.g. BaseCacheProfile::suffixFor($user)
+     * for a user's, or '' for the guests'.
+     */
+    public function usingSuffix(?string $cacheNameSuffix = null): static
     {
         $this->cacheNameSuffix = $cacheNameSuffix;
 
         return $this;
-    }
-
-    protected function build(string $key): string
-    {
-        if (isset($this->cacheNameSuffix)) {
-            $key .= $this->cacheNameSuffix;
-        }
-
-        return $key;
     }
 }
