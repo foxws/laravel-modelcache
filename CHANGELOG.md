@@ -2,6 +2,26 @@
 
 All notable changes to `laravel-modelcache` will be documented in this file.
 
+## 3.0.0 - 2026-11-23
+
+This release fixes security issues and contains breaking changes. Upgrade with the steps below.
+
+- **Every cache key changes**, so the cache starts empty after upgrading.
+- **Cached objects are restricted.** Values are only unserialized into the classes in the new `serializable_classes` config option, which defaults to the Carbon and DateTime classes. Enums, arrays and scalars always come back. Other objects come back as `__PHP_Incomplete_Class` until you add their class. Don't add classes that hold callables or other objects, such as models, collections, `CarbonPeriod` or `CarbonInterval`.
+- **Models without a key throw `InvalidModelCache`** in the instance methods, e.g. unsaved models or models selected without their key.
+- **Custom hashers** must add the third `?string $suffix` argument to `getHashFor()`.
+- **Code calling `CouldNotUnserialize::serializedCacheValue()`** must stop passing the value.
+
+Users are kept apart by their class, database and ID, so admins and users with the same ID no longer share values, while one user signed in through several guards still does. To forget another user's values, use `usingSuffix(BaseCacheProfile::suffixFor($user))`.
+
+### What's Changed
+
+* Remove auto-merge and limit the workflows by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/32
+* Keep the cache of users, records and connections apart by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/34
+* Restrict the classes cached values are unserialized into by @francoism90 in https://github.com/foxws/laravel-modelcache/pull/33
+
+**Full Changelog**: https://github.com/foxws/laravel-modelcache/compare/2.0.0...3.0.0
+
 ## 2.0.0 - 2026-11-19
 
 This release requires PHP 8.5 or newer and Laravel 13. PHP 8.4 and Laravel 12 are no longer supported, and PHP 8.6 is now tested in CI. Stay on the previous major version if you still run PHP 8.4 or Laravel 12.
