@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use Carbon\CarbonImmutable;
 use Foxws\ModelCache\Exceptions\CouldNotUnserialize;
 use Foxws\ModelCache\Hasher\CacheHasher;
 use Foxws\ModelCache\Serializers\DefaultSerializer;
 use Foxws\ModelCache\Tests\Models\Post;
+use Foxws\ModelCache\Tests\Models\Status;
 use Foxws\ModelCache\Tests\TestCase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 uses(TestCase::class);
@@ -17,12 +20,38 @@ beforeEach(function () {
     $this->post = Post::factory()->create();
 });
 
-it('follows the cache setting for the classes it unserializes', function () {
-    config(['cache.serializable_classes' => false]);
+it('restores dates and enums by default, and no other objects', function () {
+    config(['cache.serializable_classes' => null]);
 
-    $this->post->modelCache('value', new ArrayObject([1]));
+    $date = CarbonImmutable::parse('2026-11-22 10:00:00.123456', 'Europe/Amsterdam');
+    $this->post->modelCache('date', $date);
+    $this->post->modelCache('mutable', Carbon::parse('2026-11-22 10:00:00', 'Asia/Tokyo'));
+    $this->post->modelCache('enum', Status::Published);
+    $this->post->modelCache('object', new ArrayObject([1]));
 
-    expect($this->post->modelCached('value'))->toBeInstanceOf(__PHP_Incomplete_Class::class);
+    expect($this->post->modelCached('date'))->toEqual($date)
+        ->and($this->post->modelCached('date')->getTimezone()->getName())->toBe('Europe/Amsterdam')
+        ->and($this->post->modelCached('mutable'))->toBeInstanceOf(Carbon::class)
+        ->and($this->post->modelCached('enum'))->toBe(Status::Published)
+        ->and($this->post->modelCached('object'))->toBeInstanceOf(__PHP_Incomplete_Class::class);
+});
+
+it('follows the cache setting when its own is null', function () {
+    config(['modelcache.serializable_classes' => null, 'cache.serializable_classes' => [ArrayObject::class]]);
+
+    $this->post->modelCache('object', new ArrayObject([1]));
+    $this->post->modelCache('date', Carbon::now());
+
+    expect($this->post->modelCached('object'))->toBeInstanceOf(ArrayObject::class)
+        ->and($this->post->modelCached('date'))->toBeInstanceOf(__PHP_Incomplete_Class::class);
+});
+
+it('allows no objects when neither setting is set', function () {
+    config(['modelcache.serializable_classes' => null, 'cache.serializable_classes' => null]);
+
+    $this->post->modelCache('object', new ArrayObject([1]));
+
+    expect($this->post->modelCached('object'))->toBeInstanceOf(__PHP_Incomplete_Class::class);
 });
 
 it('unserializes the classes its own setting allows', function () {

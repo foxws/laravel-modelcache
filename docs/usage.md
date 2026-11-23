@@ -35,7 +35,7 @@ $video->modelCache('playback_position', 142);
 
 // With a custom TTL
 $video->modelCache('random_seed', 0.73, now()->addHours(6));
-$video->modelCache('last_viewed', now()->getTimestamp(), 3600); // TTL as seconds
+$video->modelCache('last_viewed', now(), 3600); // TTL as seconds
 ```
 
 **Retrieve a value:**

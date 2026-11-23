@@ -48,7 +48,8 @@ class DefaultSerializer implements Serializer
      */
     protected function allowedClasses(): array|bool
     {
-        $classes = Config::get('modelcache.serializable_classes') ?? Config::get('cache.serializable_classes') ?? true;
+        // Without either setting, Laravel allows every class; this allows none.
+        $classes = Config::get('modelcache.serializable_classes') ?? Config::get('cache.serializable_classes') ?? false;
 
         return is_array($classes) || is_bool($classes) ? $classes : false;
     }

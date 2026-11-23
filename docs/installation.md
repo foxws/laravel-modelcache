@@ -28,11 +28,26 @@ php artisan vendor:publish --tag="modelcache-config"
 ## Caching objects
 
 Cached values are only unserialized into the classes that
-`serializable_classes` in `config/modelcache.php` allows. It's `null` by
-default, which follows `cache.serializable_classes`. New Laravel
-applications set that to `false`, so list the classes of any objects you
-cache, such as dates and enums:
+`serializable_classes` in `config/modelcache.php` allows, so whoever can
+write to the cache store can't create other objects. By default those are
+the date classes: `Carbon`, `CarbonImmutable`, `Illuminate\Support\Carbon`,
+`DateTime` and `DateTimeImmutable`. Enums always come back, as PHP doesn't
+restrict them. Other objects come back as `__PHP_Incomplete_Class`.
+
+To cache other objects, add their classes to the list. Only add classes
+whose unserializing can't run code or create other objects: not models,
+collections, `CarbonPeriod` or `CarbonInterval`.
 
 ```php
-'serializable_classes' => [Illuminate\Support\Carbon::class, App\Enums\Quality::class],
+'serializable_classes' => [
+    Carbon\Carbon::class,
+    Carbon\CarbonImmutable::class,
+    Illuminate\Support\Carbon::class,
+    DateTime::class,
+    DateTimeImmutable::class,
+    App\Support\Money::class,
+],
 ```
+
+Set it to `null` to use `cache.serializable_classes` instead (no classes
+when that isn't set either), or to `true` to allow every class.
